@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import ilexLogo from "@/assets/ilex-logo.jpg";
 
 const SplashScreen = () => {
   const [visible, setVisible] = useState(true);
@@ -17,7 +18,7 @@ const SplashScreen = () => {
       className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center gap-4 pointer-events-auto transition-opacity duration-700 ${fading ? "opacity-0 pointer-events-none" : ""}`}
       style={{ background: "linear-gradient(150deg, #071e25 0%, #0b2e38 50%, #071e25 100%)" }}
     >
-      <div className="text-6xl" style={{ animation: "splashIn 0.6s ease 0.3s both" }}>🐺</div>
+      <img src={ilexLogo} alt="iLEX POTOSÍ Logo" className="w-28 h-28 rounded-full object-cover shadow-ilex-lg" style={{ animation: "splashIn 0.6s ease 0.3s both" }} />
       <div className="font-display font-black text-3xl text-primary-foreground tracking-[-1px]" style={{ animation: "splashIn 0.6s ease 0.6s both" }}>
         iLEX <span className="text-copper">POTOSÍ</span>
       </div>
