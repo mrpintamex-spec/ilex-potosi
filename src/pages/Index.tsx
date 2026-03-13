@@ -41,6 +41,7 @@ const Index = () => {
       <ChatConsulta pendingQuery={pendingQuery} onQueryConsumed={handleQueryConsumed} />
       <AreasLegales onAreaClick={handleAreaClick} />
       <Directorio onOpenRegistro={() => setRegistroOpen(true)} />
+      <ListaNegra />
       <UrgentHelp />
       <VotingSection />
       <ContactSection />
