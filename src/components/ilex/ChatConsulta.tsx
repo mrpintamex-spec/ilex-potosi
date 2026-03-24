@@ -1,15 +1,19 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { findBestAnswer, KB, topicLabels } from "./knowledgeBase";
+import ReactMarkdown from "react-markdown";
+import { topicLabels } from "./knowledgeBase";
+import { toast } from "sonner";
 
 interface Message {
-  text: string;
-  isUser: boolean;
+  role: "user" | "assistant";
+  content: string;
 }
 
 interface ChatConsultaProps {
   pendingQuery?: string | null;
   onQueryConsumed?: () => void;
 }
+
+const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat-legal`;
 
 const chatTopics = [
   { key: "usucapion", icon: "🏠", label: "Usucapión" },
@@ -28,15 +32,94 @@ const chatTopics = [
   { key: "abogado_deshonesto", icon: "⚠", label: "Abogados deshonestos" },
 ];
 
+async function streamChat(
+  messages: Message[],
+  onDelta: (text: string) => void,
+  onDone: () => void,
+  onError: (err: string) => void,
+) {
+  try {
+    const resp = await fetch(CHAT_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+      },
+      body: JSON.stringify({ messages }),
+    });
+
+    if (!resp.ok) {
+      const errorData = await resp.json().catch(() => ({}));
+      onError(errorData.error || "Error al consultar la IA");
+      return;
+    }
+
+    if (!resp.body) {
+      onError("Sin respuesta del servidor");
+      return;
+    }
+
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+
+      let newlineIndex: number;
+      while ((newlineIndex = buffer.indexOf("\n")) !== -1) {
+        let line = buffer.slice(0, newlineIndex);
+        buffer = buffer.slice(newlineIndex + 1);
+        if (line.endsWith("\r")) line = line.slice(0, -1);
+        if (line.startsWith(":") || line.trim() === "") continue;
+        if (!line.startsWith("data: ")) continue;
+        const jsonStr = line.slice(6).trim();
+        if (jsonStr === "[DONE]") break;
+        try {
+          const parsed = JSON.parse(jsonStr);
+          const content = parsed.choices?.[0]?.delta?.content;
+          if (content) onDelta(content);
+        } catch {
+          buffer = line + "\n" + buffer;
+          break;
+        }
+      }
+    }
+
+    // flush remaining
+    if (buffer.trim()) {
+      for (let raw of buffer.split("\n")) {
+        if (!raw) continue;
+        if (raw.endsWith("\r")) raw = raw.slice(0, -1);
+        if (!raw.startsWith("data: ")) continue;
+        const jsonStr = raw.slice(6).trim();
+        if (jsonStr === "[DONE]") continue;
+        try {
+          const parsed = JSON.parse(jsonStr);
+          const content = parsed.choices?.[0]?.delta?.content;
+          if (content) onDelta(content);
+        } catch { /* ignore */ }
+      }
+    }
+
+    onDone();
+  } catch (e) {
+    onError(e instanceof Error ? e.message : "Error de conexión");
+  }
+}
+
 const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
   const [messages, setMessages] = useState<Message[]>([
     {
-      text: `Hola, soy <b>iLEX POTOSÍ</b>. Estoy aquí para darte orientación legal honesta y clara sobre tus derechos en San Luis Potosí.<br><br><div class="wtip">✅ Siempre te diré la verdad del asunto: qué opciones tienes, cuánto puede costar y si existe alguna salida gratuita. También puedes tocar uno de los temas de arriba.</div>`,
-      isUser: false,
+      role: "assistant",
+      content:
+        "Hola, soy **iLEX POTOSÍ** 🤖⚖️. Estoy aquí para darte orientación legal honesta y clara sobre tus derechos en San Luis Potosí.\n\n✅ Siempre te diré la verdad del asunto: qué opciones tienes, cuánto puede costar y si existe alguna salida gratuita. También puedes tocar uno de los temas de arriba.",
     },
   ]);
   const [input, setInput] = useState("");
-  const [typing, setTyping] = useState(false);
+  const [isStreaming, setIsStreaming] = useState(false);
   const [activeTopic, setActiveTopic] = useState<string | null>(null);
   const chatRef = useRef<HTMLDivElement>(null);
 
@@ -44,62 +127,108 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
     if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight;
   };
 
-  useEffect(() => { scrollToBottom(); }, [messages, typing]);
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isStreaming]);
 
-  const processQuery = useCallback((query: string) => {
-    setMessages((prev) => [...prev, { text: query, isUser: true }]);
-    setTyping(true);
-    setTimeout(() => {
-      setTyping(false);
-      setMessages((prev) => [...prev, { text: findBestAnswer(query), isUser: false }]);
-    }, 900);
-  }, []);
+  const sendToAI = useCallback(
+    (userText: string) => {
+      const userMsg: Message = { role: "user", content: userText };
+      setMessages((prev) => [...prev, userMsg]);
+      setIsStreaming(true);
+
+      let assistantSoFar = "";
+
+      const allMessages = [...messages, userMsg].filter(
+        (m) => m.role === "user" || m.role === "assistant"
+      );
+
+      streamChat(
+        allMessages,
+        (chunk) => {
+          assistantSoFar += chunk;
+          setMessages((prev) => {
+            const last = prev[prev.length - 1];
+            if (last?.role === "assistant" && prev.length > 1 && assistantSoFar.startsWith(chunk.length < assistantSoFar.length ? assistantSoFar.slice(0, chunk.length) : chunk)) {
+              // Update last assistant message
+              return prev.map((m, i) =>
+                i === prev.length - 1 ? { ...m, content: assistantSoFar } : m
+              );
+            }
+            if (last?.role === "user") {
+              return [...prev, { role: "assistant", content: assistantSoFar }];
+            }
+            // Update existing assistant message
+            return prev.map((m, i) =>
+              i === prev.length - 1 ? { ...m, content: assistantSoFar } : m
+            );
+          });
+        },
+        () => setIsStreaming(false),
+        (err) => {
+          setIsStreaming(false);
+          toast.error(err);
+        }
+      );
+    },
+    [messages]
+  );
 
   useEffect(() => {
     if (pendingQuery) {
-      processQuery(pendingQuery);
+      sendToAI(pendingQuery);
       onQueryConsumed?.();
     }
-  }, [pendingQuery, onQueryConsumed, processQuery]);
+  }, [pendingQuery, onQueryConsumed, sendToAI]);
 
   const handleSend = () => {
     const q = input.trim();
-    if (!q) return;
+    if (!q || isStreaming) return;
     setInput("");
-    processQuery(q);
+    sendToAI(q);
   };
 
   const handleTopicClick = (key: string) => {
+    if (isStreaming) return;
     setActiveTopic(key);
-    if (!KB[key]) return;
     const label = topicLabels[key] || key;
-    setMessages((prev) => [...prev, { text: label, isUser: true }]);
-    setTyping(true);
-    setTimeout(() => {
-      setTyping(false);
-      setMessages((prev) => [...prev, { text: KB[key].response(), isUser: false }]);
-    }, 800);
+    sendToAI(label);
   };
 
   return (
     <section id="consulta" className="py-[90px] px-5 md:px-10 bg-background">
       <div className="container">
-        <p className="font-display text-[10px] font-bold tracking-[3px] uppercase text-copper mb-3">Consulta Legal Gratuita</p>
-        <h2 className="font-display font-extrabold text-teal-deep leading-[1.1] tracking-[-1px] mb-4" style={{ fontSize: "clamp(28px, 4vw, 42px)" }}>
+        <p className="font-display text-[10px] font-bold tracking-[3px] uppercase text-copper mb-3">
+          Consulta Legal con IA
+        </p>
+        <h2
+          className="font-display font-extrabold text-teal-deep leading-[1.1] tracking-[-1px] mb-4"
+          style={{ fontSize: "clamp(28px, 4vw, 42px)" }}
+        >
           Pregúntame lo que necesitas
         </h2>
         <p className="text-base text-foreground/70 leading-[1.8] max-w-[560px]">
-          Usa el chat o selecciona un tema. Respondo con información real basada en la legislación vigente de SLP.
+          Usa el chat o selecciona un tema. Respondo con inteligencia artificial basada en la legislación vigente de SLP.
         </p>
 
         <div className="mt-12 max-w-[860px] mx-auto bg-card rounded-[20px] shadow-ilex-lg overflow-hidden border border-cream-dark">
           {/* Header */}
-          <div className="flex items-center gap-3 px-6 py-[18px]" style={{ background: "linear-gradient(135deg, hsl(var(--teal-deep)), hsl(var(--teal)))" }}>
+          <div
+            className="flex items-center gap-3 px-6 py-[18px]"
+            style={{
+              background:
+                "linear-gradient(135deg, hsl(var(--teal-deep)), hsl(var(--teal)))",
+            }}
+          >
             <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
             <div className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
             <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
-            <h3 className="font-display text-sm font-bold text-primary-foreground flex-1">⚖ iLEX POTOSÍ — Asesor Legal</h3>
-            <span className="font-display text-[10px] text-primary-foreground/50 tracking-[1px]">● EN LÍNEA</span>
+            <h3 className="font-display text-sm font-bold text-primary-foreground flex-1">
+              🤖⚖ iLEX POTOSÍ — Asesor Legal IA
+            </h3>
+            <span className="font-display text-[10px] text-primary-foreground/50 tracking-[1px]">
+              {isStreaming ? "● PENSANDO..." : "● EN LÍNEA"}
+            </span>
           </div>
 
           {/* Topics */}
@@ -108,7 +237,8 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
               <button
                 key={t.key}
                 onClick={() => handleTopicClick(t.key)}
-                className={`shrink-0 border-[1.5px] font-display text-xs font-medium px-3.5 py-1.5 rounded-full cursor-pointer transition-all whitespace-nowrap ${
+                disabled={isStreaming}
+                className={`shrink-0 border-[1.5px] font-display text-xs font-medium px-3.5 py-1.5 rounded-full cursor-pointer transition-all whitespace-nowrap disabled:opacity-50 ${
                   activeTopic === t.key
                     ? "bg-teal border-teal text-primary-foreground"
                     : "bg-transparent border-cream-dark text-foreground/70 hover:bg-teal hover:border-teal hover:text-primary-foreground"
@@ -120,28 +250,54 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
           </div>
 
           {/* Messages */}
-          <div ref={chatRef} className="h-[380px] overflow-y-auto px-6 py-5 flex flex-col gap-3.5 scroll-smooth chat-scroll">
+          <div
+            ref={chatRef}
+            className="h-[380px] overflow-y-auto px-6 py-5 flex flex-col gap-3.5 scroll-smooth chat-scroll"
+          >
             {messages.map((msg, i) => (
-              <div key={i} className={`flex gap-2.5 max-w-full ${msg.isUser ? "flex-row-reverse" : ""}`}>
-                <div className={`w-[30px] h-[30px] rounded-full shrink-0 flex items-center justify-center font-display text-[11px] font-extrabold mt-0.5 ${
-                  msg.isUser ? "bg-copper text-primary-foreground" : "bg-teal text-primary-foreground text-sm"
-                }`}>
-                  {msg.isUser ? "TÚ" : "⚖"}
+              <div
+                key={i}
+                className={`flex gap-2.5 max-w-full ${msg.role === "user" ? "flex-row-reverse" : ""}`}
+              >
+                <div
+                  className={`w-[30px] h-[30px] rounded-full shrink-0 flex items-center justify-center font-display text-[11px] font-extrabold mt-0.5 ${
+                    msg.role === "user"
+                      ? "bg-copper text-primary-foreground"
+                      : "bg-teal text-primary-foreground text-sm"
+                  }`}
+                >
+                  {msg.role === "user" ? "TÚ" : "🤖"}
                 </div>
                 <div
                   className={`chat-bubble px-4 py-3 text-[13px] leading-[1.7] max-w-[78%] ${
-                    msg.isUser
+                    msg.role === "user"
                       ? "rounded-[12px_3px_12px_12px] font-display text-primary-foreground/90"
                       : "rounded-[3px_12px_12px_12px] border border-cream-dark border-t-[3px] border-t-copper text-foreground bg-background"
                   }`}
-                  style={msg.isUser ? { background: "linear-gradient(135deg, hsl(var(--teal-deep)), hsl(var(--teal)))" } : undefined}
-                  dangerouslySetInnerHTML={{ __html: msg.text }}
-                />
+                  style={
+                    msg.role === "user"
+                      ? {
+                          background:
+                            "linear-gradient(135deg, hsl(var(--teal-deep)), hsl(var(--teal)))",
+                        }
+                      : undefined
+                  }
+                >
+                  {msg.role === "user" ? (
+                    msg.content
+                  ) : (
+                    <div className="prose prose-sm max-w-none chat-md">
+                      <ReactMarkdown>{msg.content}</ReactMarkdown>
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
-            {typing && (
+            {isStreaming && messages[messages.length - 1]?.role === "user" && (
               <div className="flex gap-2.5">
-                <div className="w-[30px] h-[30px] rounded-full shrink-0 flex items-center justify-center bg-teal text-primary-foreground text-sm">⚖</div>
+                <div className="w-[30px] h-[30px] rounded-full shrink-0 flex items-center justify-center bg-teal text-primary-foreground text-sm">
+                  🤖
+                </div>
                 <div className="px-4 py-3 bg-background border border-cream-dark rounded-[3px_12px_12px_12px]">
                   <div className="flex gap-1">
                     <div className="w-1.5 h-1.5 rounded-full bg-copper animate-wbounce" />
@@ -158,60 +314,60 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSend();
+                }
+              }}
               placeholder="Escribe tu duda legal aquí..."
               rows={1}
-              className="flex-1 border-[1.5px] border-cream-dark rounded-lg px-3.5 py-2.5 font-display text-[13px] text-foreground bg-background outline-none resize-none min-h-[42px] max-h-[100px] transition-colors focus:border-teal-mid placeholder:text-muted-foreground"
+              disabled={isStreaming}
+              className="flex-1 border-[1.5px] border-cream-dark rounded-lg px-3.5 py-2.5 font-display text-[13px] text-foreground bg-background outline-none resize-none min-h-[42px] max-h-[100px] transition-colors focus:border-teal-mid placeholder:text-muted-foreground disabled:opacity-50"
             />
-            <button onClick={handleSend} className="bg-copper border-none text-primary-foreground w-[42px] h-[42px] rounded-lg cursor-pointer text-base flex items-center justify-center transition-all hover:bg-[#d4933a] hover:-translate-y-px shrink-0">
+            <button
+              onClick={handleSend}
+              disabled={isStreaming}
+              className="bg-copper border-none text-primary-foreground w-[42px] h-[42px] rounded-lg cursor-pointer text-base flex items-center justify-center transition-all hover:bg-[#d4933a] hover:-translate-y-px shrink-0 disabled:opacity-50"
+            >
               ➤
             </button>
           </div>
         </div>
       </div>
 
-      {/* Chat bubble styles */}
+      {/* Chat markdown styles */}
       <style>{`
-        .chat-bubble .stitle {
+        .chat-md h1, .chat-md h2, .chat-md h3, .chat-md h4 {
           font-family: 'Outfit', sans-serif;
-          font-size: 11px; font-weight: 700;
           color: hsl(var(--teal));
-          text-transform: uppercase;
-          letter-spacing: 0.8px;
           margin: 10px 0 5px;
-          padding-bottom: 4px;
+          font-size: 13px;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          padding-bottom: 3px;
           border-bottom: 1.5px solid hsl(var(--copper));
         }
-        .chat-bubble .stitle:first-child { margin-top: 0; }
-        .chat-bubble .wstep { display: flex; gap: 8px; margin: 4px 0; font-size: 12.5px; }
-        .chat-bubble .wnum {
-          background: hsl(var(--teal)); color: white;
-          font-family: 'Outfit', sans-serif; font-size: 9px; font-weight: 700;
-          width: 18px; height: 18px; border-radius: 50%;
-          display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;
-        }
-        .chat-bubble .wtip {
-          background: hsl(var(--green-pale)); border-left: 3px solid hsl(var(--green));
-          border-radius: 4px; padding: 8px 12px; margin: 8px 0;
-          font-family: 'Outfit', sans-serif; font-size: 12px; color: #0f4028;
-        }
-        .chat-bubble .wwarn {
-          background: hsl(var(--red-pale)); border-left: 3px solid hsl(var(--red));
-          border-radius: 4px; padding: 8px 12px; margin: 8px 0;
-          font-family: 'Outfit', sans-serif; font-size: 12px; color: #7a1010;
-        }
-        .chat-bubble .wcost {
-          background: hsl(var(--copper-pale)); border-left: 3px solid hsl(var(--copper));
-          border-radius: 4px; padding: 8px 12px; margin: 8px 0;
-          font-family: 'Outfit', sans-serif; font-size: 12px; color: #6a4010;
-        }
-        .chat-bubble .wlaw {
-          font-family: 'Outfit', sans-serif; font-size: 10px; font-weight: 600;
+        .chat-md h1:first-child, .chat-md h2:first-child, .chat-md h3:first-child { margin-top: 0; }
+        .chat-md p { margin: 4px 0; font-size: 13px; }
+        .chat-md ul, .chat-md ol { margin: 4px 0; padding-left: 18px; font-size: 12.5px; }
+        .chat-md li { margin: 2px 0; }
+        .chat-md strong, .chat-md b { color: hsl(var(--teal)); font-weight: 700; }
+        .chat-md code {
+          font-size: 10px; font-weight: 600;
           background: hsl(var(--teal-pale)); color: hsl(var(--teal));
-          padding: 2px 8px; border-radius: 4px; display: inline-block; margin: 2px;
+          padding: 2px 6px; border-radius: 4px;
           border: 1px solid hsla(var(--teal), 0.2);
         }
-        .chat-bubble b { color: hsl(var(--teal)); font-weight: 700; }
+        .chat-md blockquote {
+          background: hsl(var(--green-pale)); border-left: 3px solid hsl(var(--green));
+          border-radius: 4px; padding: 8px 12px; margin: 8px 0;
+          font-size: 12px; color: #0f4028;
+        }
+        .chat-md hr {
+          border: none; border-top: 1px solid hsl(var(--cream-dark)); margin: 8px 0;
+        }
       `}</style>
     </section>
   );
