@@ -52,11 +52,26 @@ const UrgentHelp = () => {
                   Facebook
                 </a>
                 <button
-                  onClick={() => {
-                    navigator.clipboard.writeText("https://ilex-potosi.lovable.app");
+                  onClick={async () => {
+                    const url = "https://ilex-potosi.lovable.app";
+                    try {
+                      await navigator.clipboard.writeText(url);
+                      toast.success("¡Enlace copiado al portapapeles!");
+                    } catch {
+                      // Fallback for non-HTTPS contexts
+                      const textarea = document.createElement("textarea");
+                      textarea.value = url;
+                      textarea.style.position = "fixed";
+                      textarea.style.opacity = "0";
+                      document.body.appendChild(textarea);
+                      textarea.select();
+                      document.execCommand("copy");
+                      document.body.removeChild(textarea);
+                      toast.success("¡Enlace copiado al portapapeles!");
+                    }
                   }}
                   className="font-display text-xs font-semibold px-5 py-2.5 rounded-lg bg-teal text-primary-foreground border-none cursor-pointer hover:-translate-y-px transition-all">
-                  Copiar enlace
+                  📋 Copiar enlace
                 </button>
               </div>
             </div>
