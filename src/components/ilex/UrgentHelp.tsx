@@ -1,3 +1,5 @@
+import { toast } from "sonner";
+
 const helpLines = [
   { icon: "🚨", name: "Emergencias", num: "911", desc: "Policía · Ambulancia · Bomberos — disponible 24 horas", color: "#d32f2f", iconBg: "#fff5f3" },
   { icon: "⚖️", name: "Comisión de Derechos Humanos — SLP", num: "800 890 6300", desc: "Quejas contra autoridades · Lunes a viernes 8:00–15:00 hrs", color: "hsl(var(--teal))", iconBg: "hsl(var(--teal-pale))" },
