@@ -170,7 +170,16 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
             );
           });
         },
-        () => setIsStreaming(false),
+        () => {
+          setIsStreaming(false);
+          setMessageCount((prev) => {
+            const next = prev + 1;
+            if (next >= 3 && !emailSent && !showEmailPrompt) {
+              setShowEmailPrompt(true);
+            }
+            return next;
+          });
+        },
         (err) => {
           setIsStreaming(false);
           toast.error(err);
