@@ -122,6 +122,11 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
   const [input, setInput] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
   const [activeTopic, setActiveTopic] = useState<string | null>(null);
+  const [showEmailPrompt, setShowEmailPrompt] = useState(false);
+  const [emailInput, setEmailInput] = useState("");
+  const [emailSending, setEmailSending] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
+  const [messageCount, setMessageCount] = useState(0);
   const chatRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
