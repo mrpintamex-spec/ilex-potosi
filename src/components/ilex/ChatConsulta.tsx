@@ -258,7 +258,7 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
           {/* Messages */}
           <div
             ref={chatRef}
-            className="h-[380px] overflow-y-auto px-6 py-5 flex flex-col gap-3.5 scroll-smooth chat-scroll"
+            className="h-[520px] overflow-y-auto px-6 py-5 flex flex-col gap-3.5 scroll-smooth chat-scroll"
           >
             {messages.map((msg, i) => (
               <div
