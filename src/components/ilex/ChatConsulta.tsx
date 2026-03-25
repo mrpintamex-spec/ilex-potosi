@@ -322,6 +322,72 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
                 </div>
               </div>
             )}
+
+            {/* Email transcript prompt */}
+            {showEmailPrompt && !emailSent && !isStreaming && (
+              <div className="flex gap-2.5">
+                <div className="w-[30px] h-[30px] rounded-full shrink-0 flex items-center justify-center bg-teal text-primary-foreground text-sm">
+                  🤖
+                </div>
+                <div className="px-4 py-3 rounded-[3px_12px_12px_12px] border border-cream-dark border-t-[3px] border-t-copper text-foreground bg-background max-w-[78%]">
+                  <p className="font-display text-[13px] font-semibold text-teal-deep mb-2">
+                    📧 ¿Quieres recibir una copia de esta conversación en tu correo?
+                  </p>
+                  {!emailInput && emailInput === "" ? (
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setEmailInput("escribir")}
+                        className="font-display text-xs font-semibold px-4 py-2 rounded-lg bg-copper text-primary-foreground border-none cursor-pointer hover:-translate-y-px transition-all"
+                      >
+                        ✅ Sí, quiero
+                      </button>
+                      <button
+                        onClick={() => { setShowEmailPrompt(false); setEmailSent(true); }}
+                        className="font-display text-xs font-semibold px-4 py-2 rounded-lg bg-muted text-foreground/70 border-none cursor-pointer hover:-translate-y-px transition-all"
+                      >
+                        No, gracias
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex gap-2 items-center">
+                      <input
+                        type="email"
+                        placeholder="tu@correo.com"
+                        value={emailInput === "escribir" ? "" : emailInput}
+                        onChange={(e) => setEmailInput(e.target.value)}
+                        className="flex-1 border-[1.5px] border-cream-dark rounded-lg px-3 py-2 font-display text-[13px] text-foreground bg-background outline-none transition-colors focus:border-teal-mid placeholder:text-muted-foreground"
+                      />
+                      <button
+                        disabled={emailSending || !emailInput || emailInput === "escribir"}
+                        onClick={async () => {
+                          if (!emailInput || emailInput === "escribir") return;
+                          setEmailSending(true);
+                          try {
+                            const transcript = messages
+                              .map((m) => `${m.role === "user" ? "TÚ" : "iLEX"}: ${m.content}`)
+                              .join("\n\n---\n\n");
+                            const { error } = await supabase.functions.invoke("send-chat-transcript", {
+                              body: { email: emailInput, transcript },
+                            });
+                            if (error) throw error;
+                            toast.success("✅ Conversación enviada a " + emailInput);
+                            setEmailSent(true);
+                            setShowEmailPrompt(false);
+                          } catch {
+                            toast.error("No se pudo enviar. Intenta de nuevo.");
+                          } finally {
+                            setEmailSending(false);
+                          }
+                        }}
+                        className="font-display text-xs font-semibold px-4 py-2 rounded-lg bg-copper text-primary-foreground border-none cursor-pointer hover:-translate-y-px transition-all disabled:opacity-50"
+                      >
+                        {emailSending ? "Enviando..." : "Enviar"}
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Input */}
