@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import ReactMarkdown from "react-markdown";
+import { supabase } from "@/integrations/supabase/client";
 import { topicLabels } from "./knowledgeBase";
 import { toast } from "sonner";
 
@@ -121,6 +122,11 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
   const [input, setInput] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
   const [activeTopic, setActiveTopic] = useState<string | null>(null);
+  const [showEmailPrompt, setShowEmailPrompt] = useState(false);
+  const [emailInput, setEmailInput] = useState("");
+  const [emailSending, setEmailSending] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
+  const [messageCount, setMessageCount] = useState(0);
   const chatRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -164,7 +170,16 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
             );
           });
         },
-        () => setIsStreaming(false),
+        () => {
+          setIsStreaming(false);
+          setMessageCount((prev) => {
+            const next = prev + 1;
+            if (next >= 3 && !emailSent && !showEmailPrompt) {
+              setShowEmailPrompt(true);
+            }
+            return next;
+          });
+        },
         (err) => {
           setIsStreaming(false);
           toast.error(err);
@@ -252,7 +267,7 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
           {/* Messages */}
           <div
             ref={chatRef}
-            className="h-[380px] overflow-y-auto px-6 py-5 flex flex-col gap-3.5 scroll-smooth chat-scroll"
+            className="h-[520px] overflow-y-auto px-6 py-5 flex flex-col gap-3.5 scroll-smooth chat-scroll"
           >
             {messages.map((msg, i) => (
               <div
@@ -304,6 +319,72 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
                     <div className="w-1.5 h-1.5 rounded-full bg-copper animate-wbounce-2" />
                     <div className="w-1.5 h-1.5 rounded-full bg-copper animate-wbounce-3" />
                   </div>
+                </div>
+              </div>
+            )}
+
+            {/* Email transcript prompt */}
+            {showEmailPrompt && !emailSent && !isStreaming && (
+              <div className="flex gap-2.5">
+                <div className="w-[30px] h-[30px] rounded-full shrink-0 flex items-center justify-center bg-teal text-primary-foreground text-sm">
+                  🤖
+                </div>
+                <div className="px-4 py-3 rounded-[3px_12px_12px_12px] border border-cream-dark border-t-[3px] border-t-copper text-foreground bg-background max-w-[78%]">
+                  <p className="font-display text-[13px] font-semibold text-teal-deep mb-2">
+                    📧 ¿Quieres recibir una copia de esta conversación en tu correo?
+                  </p>
+                  {!emailInput && emailInput === "" ? (
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setEmailInput("escribir")}
+                        className="font-display text-xs font-semibold px-4 py-2 rounded-lg bg-copper text-primary-foreground border-none cursor-pointer hover:-translate-y-px transition-all"
+                      >
+                        ✅ Sí, quiero
+                      </button>
+                      <button
+                        onClick={() => { setShowEmailPrompt(false); setEmailSent(true); }}
+                        className="font-display text-xs font-semibold px-4 py-2 rounded-lg bg-muted text-foreground/70 border-none cursor-pointer hover:-translate-y-px transition-all"
+                      >
+                        No, gracias
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex gap-2 items-center">
+                      <input
+                        type="email"
+                        placeholder="tu@correo.com"
+                        value={emailInput === "escribir" ? "" : emailInput}
+                        onChange={(e) => setEmailInput(e.target.value)}
+                        className="flex-1 border-[1.5px] border-cream-dark rounded-lg px-3 py-2 font-display text-[13px] text-foreground bg-background outline-none transition-colors focus:border-teal-mid placeholder:text-muted-foreground"
+                      />
+                      <button
+                        disabled={emailSending || !emailInput || emailInput === "escribir"}
+                        onClick={async () => {
+                          if (!emailInput || emailInput === "escribir") return;
+                          setEmailSending(true);
+                          try {
+                            const transcript = messages
+                              .map((m) => `${m.role === "user" ? "TÚ" : "iLEX"}: ${m.content}`)
+                              .join("\n\n---\n\n");
+                            const { error } = await supabase.functions.invoke("send-chat-transcript", {
+                              body: { email: emailInput, transcript },
+                            });
+                            if (error) throw error;
+                            toast.success("✅ Conversación enviada a " + emailInput);
+                            setEmailSent(true);
+                            setShowEmailPrompt(false);
+                          } catch {
+                            toast.error("No se pudo enviar. Intenta de nuevo.");
+                          } finally {
+                            setEmailSending(false);
+                          }
+                        }}
+                        className="font-display text-xs font-semibold px-4 py-2 rounded-lg bg-copper text-primary-foreground border-none cursor-pointer hover:-translate-y-px transition-all disabled:opacity-50"
+                      >
+                        {emailSending ? "Enviando..." : "Enviar"}
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             )}

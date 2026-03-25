@@ -1,3 +1,5 @@
+import { toast } from "sonner";
+
 const helpLines = [
   { icon: "🚨", name: "Emergencias", num: "911", desc: "Policía · Ambulancia · Bomberos — disponible 24 horas", color: "#d32f2f", iconBg: "#fff5f3" },
   { icon: "⚖️", name: "Comisión de Derechos Humanos — SLP", num: "800 890 6300", desc: "Quejas contra autoridades · Lunes a viernes 8:00–15:00 hrs", color: "hsl(var(--teal))", iconBg: "hsl(var(--teal-pale))" },
@@ -50,11 +52,26 @@ const UrgentHelp = () => {
                   Facebook
                 </a>
                 <button
-                  onClick={() => {
-                    navigator.clipboard.writeText("https://ilex-potosi.lovable.app");
+                  onClick={async () => {
+                    const url = "https://ilex-potosi.lovable.app";
+                    try {
+                      await navigator.clipboard.writeText(url);
+                      toast.success("¡Enlace copiado al portapapeles!");
+                    } catch {
+                      // Fallback for non-HTTPS contexts
+                      const textarea = document.createElement("textarea");
+                      textarea.value = url;
+                      textarea.style.position = "fixed";
+                      textarea.style.opacity = "0";
+                      document.body.appendChild(textarea);
+                      textarea.select();
+                      document.execCommand("copy");
+                      document.body.removeChild(textarea);
+                      toast.success("¡Enlace copiado al portapapeles!");
+                    }
                   }}
                   className="font-display text-xs font-semibold px-5 py-2.5 rounded-lg bg-teal text-primary-foreground border-none cursor-pointer hover:-translate-y-px transition-all">
-                  Copiar enlace
+                  📋 Copiar enlace
                 </button>
               </div>
             </div>
