@@ -14,8 +14,28 @@ const plans = [
 const RegistroModal = ({ open, onClose }: RegistroModalProps) => {
   const [selectedPlan, setSelectedPlan] = useState(0);
   const [submitted, setSubmitted] = useState(false);
+  const [form, setForm] = useState({ nombre: "", cedula: "", tel: "", esp: "", email: "" });
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   if (!open) return null;
+
+  const validate = () => {
+    const e: Record<string, string> = {};
+    if (!form.nombre.trim()) e.nombre = "Requerido";
+    if (!form.cedula.trim()) e.cedula = "Requerido";
+    if (!form.tel.trim()) e.tel = "Requerido";
+    if (!form.esp || form.esp === "Selecciona...") e.esp = "Selecciona una especialidad";
+    if (!form.email.trim() || !/\S+@\S+\.\S+/.test(form.email)) e.email = "Email válido requerido";
+    setErrors(e);
+    return Object.keys(e).length === 0;
+  };
+
+  const handleSubmit = () => {
+    if (validate()) setSubmitted(true);
+  };
+
+  const inputClass = (field: string) =>
+    `w-full border-[1.5px] rounded-lg px-3.5 py-2.5 font-display text-[13px] text-foreground bg-background outline-none focus:border-teal-mid focus:bg-card transition-colors placeholder:text-muted-foreground ${errors[field] ? "border-destructive" : "border-cream-dark"}`;
 
   return (
     <div className="fixed inset-0 bg-teal-deep/85 z-[2000] flex items-center justify-center p-5" onClick={(e) => e.target === e.currentTarget && onClose()}>
@@ -26,13 +46,8 @@ const RegistroModal = ({ open, onClose }: RegistroModalProps) => {
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
           {plans.map((plan, i) => (
-            <div
-              key={plan.name}
-              onClick={() => setSelectedPlan(i)}
-              className={`bg-background border-2 rounded-xl p-4 px-3 text-center cursor-pointer transition-all ${
-                selectedPlan === i ? "border-copper bg-copper-pale" : "border-cream-dark hover:border-copper hover:bg-copper-pale"
-              }`}
-            >
+            <div key={plan.name} onClick={() => setSelectedPlan(i)}
+              className={`bg-background border-2 rounded-xl p-4 px-3 text-center cursor-pointer transition-all ${selectedPlan === i ? "border-copper bg-copper-pale" : "border-cream-dark hover:border-copper hover:bg-copper-pale"}`}>
               <div className="font-display text-[13px] font-bold text-teal-deep mb-1">{plan.name}</div>
               <div className="font-display text-xl font-black text-copper mb-1">{plan.price}<span className="text-[11px] font-medium text-muted-foreground">{plan.period}</span></div>
               <div className="font-display text-[10px] text-foreground/70 leading-snug">{plan.feature}</div>
@@ -43,21 +58,24 @@ const RegistroModal = ({ open, onClose }: RegistroModalProps) => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
           <div>
             <label className="block font-display text-xs font-semibold text-teal-deep mb-1.5">Nombre completo</label>
-            <input type="text" placeholder="Lic. Nombre Apellido" className="w-full border-[1.5px] border-cream-dark rounded-lg px-3.5 py-2.5 font-display text-[13px] text-foreground bg-background outline-none focus:border-teal-mid focus:bg-card transition-colors placeholder:text-muted-foreground" />
+            <input type="text" placeholder="Lic. Nombre Apellido" value={form.nombre} onChange={(e) => setForm({ ...form, nombre: e.target.value })} className={inputClass("nombre")} />
+            {errors.nombre && <span className="text-destructive text-[11px]">{errors.nombre}</span>}
           </div>
           <div>
             <label className="block font-display text-xs font-semibold text-teal-deep mb-1.5">Cédula profesional</label>
-            <input type="text" placeholder="Número de cédula SEP" className="w-full border-[1.5px] border-cream-dark rounded-lg px-3.5 py-2.5 font-display text-[13px] text-foreground bg-background outline-none focus:border-teal-mid focus:bg-card transition-colors placeholder:text-muted-foreground" />
+            <input type="text" placeholder="Número de cédula SEP" value={form.cedula} onChange={(e) => setForm({ ...form, cedula: e.target.value })} className={inputClass("cedula")} />
+            {errors.cedula && <span className="text-destructive text-[11px]">{errors.cedula}</span>}
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
           <div>
             <label className="block font-display text-xs font-semibold text-teal-deep mb-1.5">Teléfono</label>
-            <input type="tel" placeholder="444 000 0000" className="w-full border-[1.5px] border-cream-dark rounded-lg px-3.5 py-2.5 font-display text-[13px] text-foreground bg-background outline-none focus:border-teal-mid focus:bg-card transition-colors placeholder:text-muted-foreground" />
+            <input type="tel" placeholder="444 000 0000" value={form.tel} onChange={(e) => setForm({ ...form, tel: e.target.value })} className={inputClass("tel")} />
+            {errors.tel && <span className="text-destructive text-[11px]">{errors.tel}</span>}
           </div>
           <div>
             <label className="block font-display text-xs font-semibold text-teal-deep mb-1.5">Especialidad principal</label>
-            <select className="w-full border-[1.5px] border-cream-dark rounded-lg px-3.5 py-2.5 font-display text-[13px] text-foreground bg-background outline-none focus:border-teal-mid focus:bg-card transition-colors">
+            <select value={form.esp} onChange={(e) => setForm({ ...form, esp: e.target.value })} className={inputClass("esp")}>
               <option>Selecciona...</option>
               <option>Derecho Inmobiliario</option>
               <option>Derecho Familiar</option>
@@ -67,19 +85,16 @@ const RegistroModal = ({ open, onClose }: RegistroModalProps) => {
               <option>Derecho Laboral</option>
               <option>General</option>
             </select>
+            {errors.esp && <span className="text-destructive text-[11px]">{errors.esp}</span>}
           </div>
         </div>
         <div className="mb-4">
           <label className="block font-display text-xs font-semibold text-teal-deep mb-1.5">Correo electrónico</label>
-          <input type="email" placeholder="despacho@correo.com" className="w-full border-[1.5px] border-cream-dark rounded-lg px-3.5 py-2.5 font-display text-[13px] text-foreground bg-background outline-none focus:border-teal-mid focus:bg-card transition-colors placeholder:text-muted-foreground" />
+          <input type="email" placeholder="despacho@correo.com" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className={inputClass("email")} />
+          {errors.email && <span className="text-destructive text-[11px]">{errors.email}</span>}
         </div>
-        <button
-          onClick={() => setSubmitted(true)}
-          disabled={submitted}
-          className={`w-full font-display text-[15px] font-bold py-3.5 rounded-[10px] border-none cursor-pointer transition-all mt-2 ${
-            submitted ? "bg-ilex-green text-primary-foreground" : "bg-copper text-primary-foreground hover:bg-[#d4933a] hover:-translate-y-px"
-          }`}
-        >
+        <button onClick={handleSubmit} disabled={submitted}
+          className={`w-full font-display text-[15px] font-bold py-3.5 rounded-[10px] border-none cursor-pointer transition-all mt-2 ${submitted ? "bg-ilex-green text-primary-foreground" : "bg-copper text-primary-foreground hover:bg-[#d4933a] hover:-translate-y-px"}`}>
           {submitted ? "✓ Solicitud enviada — te contactamos pronto" : "Enviar solicitud de registro →"}
         </button>
       </div>

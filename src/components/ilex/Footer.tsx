@@ -19,8 +19,8 @@ const Footer = () => {
         <div>
           <h4 className="font-display text-xs font-bold tracking-[2px] uppercase text-copper mb-4">Legal</h4>
           <ul className="list-none grid gap-2">
-            <li><a href="#" className="font-display text-[13px] text-primary-foreground/55 no-underline hover:text-primary-foreground transition-colors">Aviso de Privacidad</a></li>
-            <li><a href="#" className="font-display text-[13px] text-primary-foreground/55 no-underline hover:text-primary-foreground transition-colors">Términos de Uso</a></li>
+            <li><a href="#aviso-privacidad" className="font-display text-[13px] text-primary-foreground/55 no-underline hover:text-primary-foreground transition-colors">Aviso de Privacidad</a></li>
+            <li><a href="#terminos-uso" className="font-display text-[13px] text-primary-foreground/55 no-underline hover:text-primary-foreground transition-colors">Términos de Uso</a></li>
             <li><a href="mailto:iLEX.POTOSI@protonmail.com" className="font-display text-[13px] text-primary-foreground/55 no-underline hover:text-primary-foreground transition-colors">Email</a></li>
           </ul>
         </div>

@@ -45,20 +45,16 @@ const UrgentHelp = () => {
                 Comparte el sitio con alguien que tenga una duda legal. Puede marcar la diferencia.
               </p>
               <div className="flex gap-2 flex-wrap">
-                <a href="https://wa.me/?text=Mira%20este%20asesor%20legal%20gratuito%20para%20SLP%3A%20https%3A%2F%2Filexpotosi.netlify.app" target="_blank" rel="noopener"
-                  className="font-display text-xs font-semibold px-5 py-2.5 rounded-lg bg-[#25D366] text-primary-foreground no-underline hover:-translate-y-px transition-all">
-                  WhatsApp
-                </a>
-                <a href="https://www.facebook.com/sharer/sharer.php?u=https://ilexpotosi.netlify.app" target="_blank" rel="noopener"
+                <a href="https://www.facebook.com/sharer/sharer.php?u=https://ilex-potosi.lovable.app" target="_blank" rel="noopener"
                   className="font-display text-xs font-semibold px-5 py-2.5 rounded-lg bg-fb-blue text-primary-foreground no-underline hover:-translate-y-px transition-all">
                   Facebook
                 </a>
                 <button
                   onClick={() => {
-                    navigator.clipboard.writeText("https://ilexpotosi.netlify.app");
+                    navigator.clipboard.writeText("https://ilex-potosi.lovable.app");
                   }}
                   className="font-display text-xs font-semibold px-5 py-2.5 rounded-lg bg-teal text-primary-foreground border-none cursor-pointer hover:-translate-y-px transition-all">
-                  Copiar
+                  Copiar enlace
                 </button>
               </div>
             </div>
