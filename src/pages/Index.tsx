@@ -12,7 +12,6 @@ import VotingSection from "@/components/ilex/VotingSection";
 import ContactSection from "@/components/ilex/ContactSection";
 import Footer from "@/components/ilex/Footer";
 import RegistroModal from "@/components/ilex/RegistroModal";
-import AdBanner from "@/components/ilex/AdBanner";
 import { KB, topicLabels } from "@/components/ilex/knowledgeBase";
 
 const Index = () => {
@@ -39,16 +38,12 @@ const Index = () => {
       <Navbar />
       <HeroSection onSearch={handleHeroSearch} />
       <WhySection />
-      <AdBanner id="post-why" />
       <ChatConsulta pendingQuery={pendingQuery} onQueryConsumed={handleQueryConsumed} />
       <AreasLegales onAreaClick={handleAreaClick} />
-      <AdBanner id="post-areas" />
       <Directorio onOpenRegistro={() => setRegistroOpen(true)} />
       <ListaNegra />
-      <AdBanner id="post-lista" />
       <UrgentHelp />
       <VotingSection />
-      <AdBanner id="post-voting" />
       <ContactSection />
       <Footer />
       <RegistroModal open={registroOpen} onClose={() => setRegistroOpen(false)} />
