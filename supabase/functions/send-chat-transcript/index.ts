@@ -52,7 +52,7 @@ serve(async (req) => {
       .split("\n\n---\n\n")
       .map((block: string) => {
         const isUser = block.startsWith("TÚ:");
-        const content = block.replace(/^(TÚ|iLEX):\s*/, "");
+        const content = escapeHtml(block.replace(/^(TÚ|iLEX):\s*/, ""));
         const label = isUser ? "TÚ" : "iLEX POTOSÍ 🤖⚖️";
         const bgColor = isUser ? "#1a5c4c" : "#faf8f5";
         const textColor = isUser ? "#ffffff" : "#1a3a2a";
