@@ -5,6 +5,19 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function isValidEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && email.length <= 254;
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -20,12 +33,26 @@ serve(async (req) => {
       });
     }
 
+    if (!isValidEmail(email)) {
+      return new Response(JSON.stringify({ error: "Email inválido" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    if (typeof transcript !== "string" || transcript.length > 100000) {
+      return new Response(JSON.stringify({ error: "Transcripción inválida" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     // Format transcript as HTML
     const htmlTranscript = transcript
       .split("\n\n---\n\n")
       .map((block: string) => {
         const isUser = block.startsWith("TÚ:");
-        const content = block.replace(/^(TÚ|iLEX):\s*/, "");
+        const content = escapeHtml(block.replace(/^(TÚ|iLEX):\s*/, ""));
         const label = isUser ? "TÚ" : "iLEX POTOSÍ 🤖⚖️";
         const bgColor = isUser ? "#1a5c4c" : "#faf8f5";
         const textColor = isUser ? "#ffffff" : "#1a3a2a";
