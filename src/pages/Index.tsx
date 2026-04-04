@@ -47,6 +47,7 @@ const Index = () => {
       <Directorio onOpenRegistro={() => setRegistroOpen(true)} />
       <ListaNegra />
       <AdBanner slot="after-lista" />
+      <DocumentosLegales />
       <UrgentHelp />
       <VotingSection />
       <AdBanner slot="after-voting" />
