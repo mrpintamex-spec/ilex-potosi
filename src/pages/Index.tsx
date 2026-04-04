@@ -7,6 +7,7 @@ import ChatConsulta from "@/components/ilex/ChatConsulta";
 import AreasLegales from "@/components/ilex/AreasLegales";
 import Directorio from "@/components/ilex/Directorio";
 import ListaNegra from "@/components/ilex/ListaNegra";
+import DocumentosLegales from "@/components/ilex/DocumentosLegales";
 import UrgentHelp from "@/components/ilex/UrgentHelp";
 import VotingSection from "@/components/ilex/VotingSection";
 import ContactSection from "@/components/ilex/ContactSection";
@@ -46,6 +47,7 @@ const Index = () => {
       <Directorio onOpenRegistro={() => setRegistroOpen(true)} />
       <ListaNegra />
       <AdBanner slot="after-lista" />
+      <DocumentosLegales />
       <UrgentHelp />
       <VotingSection />
       <AdBanner slot="after-voting" />
