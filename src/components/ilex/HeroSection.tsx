@@ -53,10 +53,10 @@ const HeroSection = ({ onSearch }: HeroSectionProps) => {
 
         <div className="animate-fade-up-5 flex gap-5 md:gap-10 justify-center">
           {[
-            { num: "33+", label: "Temas Legales" },
+            { num: "14", label: "Temas Legales" },
+            { num: "80+", label: "Frases Coloquiales" },
             { num: "100%", label: "Gratis" },
-            { num: "SLP", label: "Especializado" },
-            { num: "24h", label: "Disponible" },
+            { num: "24/7", label: "Disponible" },
           ].map((stat) => (
             <div key={stat.label} className="text-center">
               <div className="font-display text-[28px] font-extrabold text-copper leading-none">{stat.num}</div>
