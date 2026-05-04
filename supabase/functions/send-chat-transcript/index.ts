@@ -117,7 +117,7 @@ serve(async (req) => {
     });
   } catch (e) {
     console.error("Error:", e);
-    return new Response(JSON.stringify({ error: e.message }), {
+    return new Response(JSON.stringify({ error: "Error al enviar el correo" }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
