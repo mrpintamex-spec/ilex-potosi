@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -18,15 +19,90 @@ function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && email.length <= 254;
 }
 
+async function sha256Hex(input: string): Promise<string> {
+  const data = new TextEncoder().encode(input);
+  const hash = await crypto.subtle.digest("SHA-256", data);
+  return Array.from(new Uint8Array(hash))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+function getClientIp(req: Request): string | null {
+  const fwd = req.headers.get("x-forwarded-for");
+  if (fwd) return fwd.split(",")[0].trim();
+  return req.headers.get("cf-connecting-ip") || req.headers.get("x-real-ip");
+}
+
+// Fire-and-forget audit log — never throws to caller
+async function logAudit(entry: {
+  email?: string;
+  transcriptLength?: number;
+  clientIp: string | null;
+  userAgent: string | null;
+  outcome: string;
+  statusCode: number;
+  errorDetail?: string;
+}) {
+  try {
+    const supabaseUrl = Deno.env.get("SUPABASE_URL");
+    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    if (!supabaseUrl || !serviceKey) {
+      console.warn("Audit skipped: missing service credentials");
+      return;
+    }
+    const supabase = createClient(supabaseUrl, serviceKey, {
+      auth: { persistSession: false },
+    });
+
+    let email_hash: string | null = null;
+    let email_domain: string | null = null;
+    if (entry.email && typeof entry.email === "string") {
+      const normalized = entry.email.trim().toLowerCase();
+      email_hash = await sha256Hex(normalized);
+      const at = normalized.lastIndexOf("@");
+      email_domain = at >= 0 ? normalized.slice(at + 1).slice(0, 253) : null;
+    }
+
+    const { error } = await supabase.from("email_audit_log").insert({
+      email_hash,
+      email_domain,
+      transcript_length: entry.transcriptLength ?? null,
+      client_ip: entry.clientIp,
+      user_agent: entry.userAgent ? entry.userAgent.slice(0, 500) : null,
+      outcome: entry.outcome,
+      status_code: entry.statusCode,
+      error_detail: entry.errorDetail ? entry.errorDetail.slice(0, 500) : null,
+    });
+    if (error) console.error("Audit insert error:", error.message);
+  } catch (e) {
+    console.error("Audit unexpected error:", e);
+  }
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
+  const clientIp = getClientIp(req);
+  const userAgent = req.headers.get("user-agent");
+
+  let email: string | undefined;
+  let transcript: string | undefined;
+
   try {
-    const { email, transcript } = await req.json();
+    const body = await req.json();
+    email = body?.email;
+    transcript = body?.transcript;
 
     if (!email || !transcript) {
+      await logAudit({
+        email,
+        clientIp,
+        userAgent,
+        outcome: "missing_fields",
+        statusCode: 400,
+      });
       return new Response(JSON.stringify({ error: "Email y transcripción requeridos" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -34,6 +110,13 @@ serve(async (req) => {
     }
 
     if (!isValidEmail(email)) {
+      await logAudit({
+        email,
+        clientIp,
+        userAgent,
+        outcome: "invalid_email",
+        statusCode: 400,
+      });
       return new Response(JSON.stringify({ error: "Email inválido" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -41,6 +124,14 @@ serve(async (req) => {
     }
 
     if (typeof transcript !== "string" || transcript.length > 100000) {
+      await logAudit({
+        email,
+        transcriptLength: typeof transcript === "string" ? transcript.length : 0,
+        clientIp,
+        userAgent,
+        outcome: "invalid_transcript",
+        statusCode: 400,
+      });
       return new Response(JSON.stringify({ error: "Transcripción inválida" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -83,9 +174,8 @@ serve(async (req) => {
         </div>
       </div>`;
 
-    // Use Resend or a simple SMTP — for now we'll use the Supabase built-in
     const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
-    
+
     if (RESEND_API_KEY) {
       const res = await fetch("https://api.resend.com/emails", {
         method: "POST",
@@ -100,23 +190,52 @@ serve(async (req) => {
           html,
         }),
       });
-      
+
       if (!res.ok) {
         const err = await res.text();
         console.error("Resend error:", err);
-        throw new Error("Error enviando email");
+        await logAudit({
+          email,
+          transcriptLength: transcript.length,
+          clientIp,
+          userAgent,
+          outcome: "provider_error",
+          statusCode: 502,
+          errorDetail: `resend_${res.status}`,
+        });
+        return new Response(JSON.stringify({ error: "Error al enviar el correo" }), {
+          status: 502,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
       }
     } else {
-      // Fallback: just log and return success (no email provider configured)
       console.log("No RESEND_API_KEY configured. Transcript for:", email);
       console.log("Would send transcript with", transcript.length, "chars");
     }
+
+    await logAudit({
+      email,
+      transcriptLength: transcript.length,
+      clientIp,
+      userAgent,
+      outcome: "success",
+      statusCode: 200,
+    });
 
     return new Response(JSON.stringify({ success: true }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (e) {
     console.error("Error:", e);
+    await logAudit({
+      email,
+      transcriptLength: typeof transcript === "string" ? transcript.length : undefined,
+      clientIp,
+      userAgent,
+      outcome: "internal_error",
+      statusCode: 500,
+      errorDetail: e instanceof Error ? e.message.slice(0, 500) : String(e).slice(0, 500),
+    });
     return new Response(JSON.stringify({ error: "Error al enviar el correo" }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
