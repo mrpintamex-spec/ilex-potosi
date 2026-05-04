@@ -14,7 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      email_audit_log: {
+        Row: {
+          client_ip: string | null
+          created_at: string
+          email_domain: string | null
+          email_hash: string | null
+          error_detail: string | null
+          id: string
+          outcome: string
+          status_code: number
+          transcript_length: number | null
+          user_agent: string | null
+        }
+        Insert: {
+          client_ip?: string | null
+          created_at?: string
+          email_domain?: string | null
+          email_hash?: string | null
+          error_detail?: string | null
+          id?: string
+          outcome: string
+          status_code: number
+          transcript_length?: number | null
+          user_agent?: string | null
+        }
+        Update: {
+          client_ip?: string | null
+          created_at?: string
+          email_domain?: string | null
+          email_hash?: string | null
+          error_detail?: string | null
+          id?: string
+          outcome?: string
+          status_code?: number
+          transcript_length?: number | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
