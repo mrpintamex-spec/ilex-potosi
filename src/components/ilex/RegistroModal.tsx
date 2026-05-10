@@ -6,9 +6,9 @@ interface RegistroModalProps {
 }
 
 const plans = [
-  { name: "Básico", price: "$499", period: "/mes", feature: "Perfil en directorio · 1 especialidad · Teléfono visible" },
-  { name: "Destacado", price: "$999", period: "/mes", feature: "Todo lo anterior · 3 especialidades · WhatsApp · Foto" },
-  { name: "Premium", price: "$1,799", period: "/mes", feature: "Todo lo anterior · Destacado en búsqueda · Badge verificado" },
+  { name: "Básico", price: "$199", period: "/mes", feature: "Perfil en directorio · 1 especialidad · Teléfono visible" },
+  { name: "Destacado", price: "$499", period: "/mes", feature: "Todo lo anterior · 3 especialidades · WhatsApp · Foto" },
+  { name: "Premium", price: "$899", period: "/mes", feature: "Todo lo anterior · Destacado en búsqueda · Badge verificado" },
 ];
 
 const RegistroModal = ({ open, onClose }: RegistroModalProps) => {
