@@ -14,48 +14,6 @@ export type Database = {
   }
   public: {
     Tables: {
-      abuse_alerts: {
-        Row: {
-          created_at: string
-          failure_count: number
-          id: string
-          notification_error: string | null
-          notified: boolean
-          outcomes_breakdown: Json | null
-          scope: string
-          scope_value: string
-          window_end: string
-          window_minutes: number
-          window_start: string
-        }
-        Insert: {
-          created_at?: string
-          failure_count: number
-          id?: string
-          notification_error?: string | null
-          notified?: boolean
-          outcomes_breakdown?: Json | null
-          scope: string
-          scope_value: string
-          window_end: string
-          window_minutes: number
-          window_start: string
-        }
-        Update: {
-          created_at?: string
-          failure_count?: number
-          id?: string
-          notification_error?: string | null
-          notified?: boolean
-          outcomes_breakdown?: Json | null
-          scope?: string
-          scope_value?: string
-          window_end?: string
-          window_minutes?: number
-          window_start?: string
-        }
-        Relationships: []
-      }
       email_audit_log: {
         Row: {
           client_ip: string | null
