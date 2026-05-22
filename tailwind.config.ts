@@ -14,8 +14,10 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ['Outfit', 'sans-serif'],
+        display: ['Cormorant Garamond', 'Georgia', 'serif'],
         body: ['Lora', 'Georgia', 'serif'],
+        sans: ['Inter', 'sans-serif'],
+        script: ['Allura', 'cursive'],
       },
       colors: {
         border: "hsl(var(--border))",

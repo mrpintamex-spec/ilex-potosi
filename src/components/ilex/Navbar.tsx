@@ -1,24 +1,33 @@
-import ilexLogo from "@/assets/ilex-logo.jpg";
+const navItems = [
+  { href: "#consulta", label: "Consulta" },
+  { href: "#diagnostico", label: "Diagnóstico" },
+  { href: "#documentos", label: "Documentos" },
+  { href: "#areas", label: "Áreas" },
+  { href: "#directorio", label: "Abogados" },
+  { href: "#lista-negra", label: "Lista Negra" },
+  { href: "#contacto", label: "Contacto" },
+];
 
 const Navbar = () => {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 h-16 flex items-center px-5 md:px-10 justify-between bg-teal-deep/[0.97] backdrop-blur-md border-b border-copper/20">
-      <a href="#inicio" className="flex items-center gap-2.5 no-underline">
-        <img src={ilexLogo} alt="iLEX POTOSÍ" className="w-9 h-9 rounded-full object-cover" />
-        <span className="font-display font-black text-xl tracking-tight text-primary-foreground">
+    <nav className="fixed top-0 left-0 right-0 z-50 h-16 flex items-center px-5 md:px-10 justify-between bg-background/85 backdrop-blur-md border-b border-copper/15">
+      <a href="#inicio" className="flex items-center gap-2 no-underline">
+        <span className="w-9 h-9 rounded-full border border-copper/50 flex items-center justify-center font-display text-copper text-base font-semibold tracking-tight">iL</span>
+        <span className="font-display text-lg tracking-tight text-cream">
           iLEX <span className="text-copper">POTOSÍ</span>
         </span>
       </a>
-      <ul className="hidden md:flex gap-2 items-center list-none">
-        <li><a href="#consulta" className="font-display text-[13px] font-medium text-primary-foreground/75 no-underline px-3.5 py-1.5 rounded-md hover:text-primary-foreground hover:bg-primary-foreground/[0.08] transition-all">Consulta Legal</a></li>
-        <li><a href="#areas" className="font-display text-[13px] font-medium text-primary-foreground/75 no-underline px-3.5 py-1.5 rounded-md hover:text-primary-foreground hover:bg-primary-foreground/[0.08] transition-all">Áreas</a></li>
-        <li><a href="#directorio" className="font-display text-[13px] font-medium text-primary-foreground/75 no-underline px-3.5 py-1.5 rounded-md hover:text-primary-foreground hover:bg-primary-foreground/[0.08] transition-all">Abogados</a></li>
-        <li><a href="#lista-negra" className="font-display text-[13px] font-medium text-primary-foreground/75 no-underline px-3.5 py-1.5 rounded-md hover:text-primary-foreground hover:bg-primary-foreground/[0.08] transition-all">Lista Negra</a></li>
-        <li><a href="#documentos" className="font-display text-[13px] font-medium text-primary-foreground/75 no-underline px-3.5 py-1.5 rounded-md hover:text-primary-foreground hover:bg-primary-foreground/[0.08] transition-all">Documentos</a></li>
-        <li><a href="#contacto" className="font-display text-[13px] font-medium text-primary-foreground/75 no-underline px-3.5 py-1.5 rounded-md hover:text-primary-foreground hover:bg-primary-foreground/[0.08] transition-all">Contacto</a></li>
+      <ul className="hidden md:flex gap-1 items-center list-none">
+        {navItems.map((n) => (
+          <li key={n.href}>
+            <a href={n.href} className="font-sans text-[11px] font-medium tracking-[1.5px] uppercase text-cream/65 no-underline px-3 py-2 rounded-sm hover:text-copper transition-all">
+              {n.label}
+            </a>
+          </li>
+        ))}
         <li>
-          <a href="#consulta" className="font-display text-[13px] font-semibold bg-copper text-primary-foreground px-4.5 py-[7px] rounded-lg hover:bg-[#d4933a] hover:-translate-y-px transition-all no-underline">
-            Consultar Gratis
+          <a href="#consulta" className="font-sans text-[11px] font-bold tracking-[2px] uppercase border border-copper/60 text-copper px-4 py-2 rounded-sm hover:bg-copper hover:text-primary-foreground transition-all no-underline ml-2">
+            Asesoría
           </a>
         </li>
       </ul>
