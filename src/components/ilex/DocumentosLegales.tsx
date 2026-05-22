@@ -516,7 +516,7 @@ const DocumentosLegales = () => {
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Descarga plantillas de documentos legales vigentes y adaptados para el Estado de San Luis Potosí. 
-            <strong className="text-foreground"> Estos son ejemplos orientativos</strong> — consulta siempre a un abogado.
+            <strong className="text-cream"> Estos son ejemplos orientativos</strong> — consulta siempre a un abogado.
           </p>
         </div>
 
@@ -527,13 +527,13 @@ const DocumentosLegales = () => {
                 <div className="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
                   {cat.icon}
                 </div>
-                <h3 className="font-display text-lg font-bold text-foreground">{cat.titulo}</h3>
+                <h3 className="font-display text-lg font-bold text-cream">{cat.titulo}</h3>
               </div>
               <div className="space-y-4">
                 {cat.documentos.map((doc) => (
                   <div key={doc.nombre} className="flex items-start justify-between gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
                     <div className="flex-1 min-w-0">
-                      <p className="font-display text-sm font-semibold text-foreground">{doc.nombre}</p>
+                      <p className="font-display text-sm font-semibold text-cream">{doc.nombre}</p>
                       <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">{doc.descripcion}</p>
                     </div>
                     <Button

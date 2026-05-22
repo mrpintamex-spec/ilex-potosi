@@ -12,15 +12,15 @@ const helpLines = [
 
 const UrgentHelp = () => {
   return (
-    <section className="py-20 px-5 md:px-10 bg-card border-t border-cream-dark">
+    <section className="py-20 px-5 md:px-10 bg-card border-t border-copper/15">
       <div className="container">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-[60px] items-start">
           <div>
             <p className="font-display text-[10px] font-bold tracking-[3px] uppercase text-copper mb-3">Líneas de ayuda</p>
-            <h2 className="font-display font-extrabold text-teal-deep leading-[1.1] tracking-[-1px] mb-4" style={{ fontSize: "32px" }}>
+            <h2 className="font-display font-extrabold text-cream leading-[1.1] tracking-[-1px] mb-4" style={{ fontSize: "32px" }}>
               ¿Necesitas ayuda urgente?
             </h2>
-            <p className="font-display text-sm text-foreground/70 leading-[1.8] mb-7">
+            <p className="font-display text-sm text-cream/70 leading-[1.8] mb-7">
               Algunas situaciones no pueden esperar. Estas instituciones atienden de forma gratuita.
             </p>
             <div className="grid gap-3">
@@ -29,7 +29,7 @@ const UrgentHelp = () => {
                   <div className="flex gap-3.5 items-start p-3.5 px-4 bg-background rounded-[10px] border-l-4 transition-all hover:bg-card hover:shadow-ilex-sm hover:translate-x-[3px]" style={{ borderLeftColor: line.color }}>
                     <div className="w-[38px] h-[38px] rounded-lg flex items-center justify-center text-lg shrink-0" style={{ background: line.iconBg }}>{line.icon}</div>
                     <div>
-                      <div className="font-display text-[13px] font-bold text-teal-deep mb-0.5">{line.name}</div>
+                      <div className="font-display text-[13px] font-bold text-cream mb-0.5">{line.name}</div>
                       <div className="font-display text-[17px] font-extrabold text-copper mb-0.5">{line.num}</div>
                       <div className="font-display text-[11px] text-muted-foreground leading-snug">{line.desc}</div>
                     </div>
@@ -40,10 +40,10 @@ const UrgentHelp = () => {
           </div>
 
           <div className="space-y-6">
-            <div className="bg-background rounded-2xl p-7 border border-cream-dark">
+            <div className="bg-background rounded-2xl p-7 border border-copper/15">
               <p className="font-display text-[10px] font-bold tracking-[3px] uppercase text-copper mb-3">Comparte esta página</p>
-              <h3 className="font-display text-xl font-bold text-teal-deep mb-3">Ayuda a que más personas conozcan sus derechos</h3>
-              <p className="font-display text-[13px] text-foreground/70 leading-[1.7] mb-5">
+              <h3 className="font-display text-xl font-bold text-cream mb-3">Ayuda a que más personas conozcan sus derechos</h3>
+              <p className="font-display text-[13px] text-cream/70 leading-[1.7] mb-5">
                 Comparte el sitio con alguien que tenga una duda legal. Puede marcar la diferencia.
               </p>
               <div className="flex gap-2 flex-wrap">
