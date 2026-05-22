@@ -7,52 +7,52 @@ const ContactSection = () => {
     <section id="contacto" className="py-[90px] px-5 md:px-10 bg-card">
       <div className="container">
         <p className="font-display text-[10px] font-bold tracking-[3px] uppercase text-copper mb-3">Contacto</p>
-        <h2 className="font-display font-extrabold text-teal-deep leading-[1.1] tracking-[-1px] mb-4" style={{ fontSize: "clamp(28px, 4vw, 42px)" }}>
+        <h2 className="font-display font-extrabold text-cream leading-[1.1] tracking-[-1px] mb-4" style={{ fontSize: "clamp(28px, 4vw, 42px)" }}>
           ¿Tu caso necesita<br />atención personalizada?
         </h2>
-        <p className="text-base text-foreground/70 leading-[1.8] max-w-[560px]">
+        <p className="text-base text-cream/70 leading-[1.8] max-w-[560px]">
           Si tu situación es compleja o necesitas orientación directa, escríbenos. Te respondemos en menos de 24 horas.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-[60px] mt-12 items-start">
           <div className="grid gap-5">
             {[
-              { icon: "✉️", title: "Correo electrónico", content: <a href="mailto:iLEX.POTOSI@protonmail.com" className="font-display text-[13px] text-foreground/70 no-underline hover:text-copper transition-colors">iLEX.POTOSI@protonmail.com</a> },
-              { icon: "📍", title: "Cobertura", content: <p className="font-display text-[13px] text-foreground/70">San Luis Potosí (Capital y municipios) · Ciudad de México</p> },
-              { icon: "⏰", title: "Tiempo de respuesta", content: <p className="font-display text-[13px] text-foreground/70">Consulta en chat: inmediata · Correo: menos de 24 hrs</p> },
+              { icon: "✉️", title: "Correo electrónico", content: <a href="mailto:iLEX.POTOSI@protonmail.com" className="font-display text-[13px] text-cream/70 no-underline hover:text-copper transition-colors">iLEX.POTOSI@protonmail.com</a> },
+              { icon: "📍", title: "Cobertura", content: <p className="font-display text-[13px] text-cream/70">San Luis Potosí (Capital y municipios) · Ciudad de México</p> },
+              { icon: "⏰", title: "Tiempo de respuesta", content: <p className="font-display text-[13px] text-cream/70">Consulta en chat: inmediata · Correo: menos de 24 hrs</p> },
             ].map((item) => (
               <div key={item.title} className="flex gap-4 items-start p-5 bg-background rounded-xl transition-all hover:shadow-ilex-sm">
                 <div className="w-11 h-11 bg-teal rounded-[10px] flex items-center justify-center text-xl shrink-0">{item.icon}</div>
                 <div>
-                  <h4 className="font-display text-sm font-bold text-teal-deep mb-1">{item.title}</h4>
+                  <h4 className="font-display text-sm font-bold text-cream mb-1">{item.title}</h4>
                   {item.content}
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="bg-background rounded-[20px] p-9 border border-cream-dark">
-            <h3 className="font-display text-xl font-bold text-teal-deep mb-1.5">Envíanos tu consulta</h3>
-            <p className="text-[13px] text-foreground/70 mb-6 leading-relaxed">
+          <div className="bg-background rounded-[20px] p-9 border border-copper/15">
+            <h3 className="font-display text-xl font-bold text-cream mb-1.5">Envíanos tu consulta</h3>
+            <p className="text-[13px] text-cream/70 mb-6 leading-relaxed">
               Describe tu situación y te orientamos sin costo. Para casos que requieren abogado, te conectamos con el más adecuado del directorio.
             </p>
             <div className="mb-4">
-              <label className="block font-display text-xs font-semibold text-teal-deep mb-1.5">Nombre completo</label>
-              <input type="text" placeholder="Tu nombre" className="w-full border-[1.5px] border-cream-dark rounded-lg px-3.5 py-2.5 font-display text-[13px] text-foreground bg-background outline-none transition-colors focus:border-teal-mid focus:bg-card placeholder:text-muted-foreground" />
+              <label className="block font-display text-xs font-semibold text-cream mb-1.5">Nombre completo</label>
+              <input type="text" placeholder="Tu nombre" className="w-full border-[1.5px] border-copper/15 rounded-lg px-3.5 py-2.5 font-display text-[13px] text-foreground bg-background outline-none transition-colors focus:border-teal-mid focus:bg-card placeholder:text-muted-foreground" />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
               <div>
-                <label className="block font-display text-xs font-semibold text-teal-deep mb-1.5">Correo electrónico</label>
-                <input type="email" placeholder="tu@correo.com" className="w-full border-[1.5px] border-cream-dark rounded-lg px-3.5 py-2.5 font-display text-[13px] text-foreground bg-background outline-none transition-colors focus:border-teal-mid focus:bg-card placeholder:text-muted-foreground" />
+                <label className="block font-display text-xs font-semibold text-cream mb-1.5">Correo electrónico</label>
+                <input type="email" placeholder="tu@correo.com" className="w-full border-[1.5px] border-copper/15 rounded-lg px-3.5 py-2.5 font-display text-[13px] text-foreground bg-background outline-none transition-colors focus:border-teal-mid focus:bg-card placeholder:text-muted-foreground" />
               </div>
               <div>
-                <label className="block font-display text-xs font-semibold text-teal-deep mb-1.5">Teléfono (opcional)</label>
-                <input type="tel" placeholder="444 000 0000" className="w-full border-[1.5px] border-cream-dark rounded-lg px-3.5 py-2.5 font-display text-[13px] text-foreground bg-background outline-none transition-colors focus:border-teal-mid focus:bg-card placeholder:text-muted-foreground" />
+                <label className="block font-display text-xs font-semibold text-cream mb-1.5">Teléfono (opcional)</label>
+                <input type="tel" placeholder="444 000 0000" className="w-full border-[1.5px] border-copper/15 rounded-lg px-3.5 py-2.5 font-display text-[13px] text-foreground bg-background outline-none transition-colors focus:border-teal-mid focus:bg-card placeholder:text-muted-foreground" />
               </div>
             </div>
             <div className="mb-4">
-              <label className="block font-display text-xs font-semibold text-teal-deep mb-1.5">Área legal</label>
-              <select className="w-full border-[1.5px] border-cream-dark rounded-lg px-3.5 py-2.5 font-display text-[13px] text-foreground bg-background outline-none transition-colors focus:border-teal-mid focus:bg-card">
+              <label className="block font-display text-xs font-semibold text-cream mb-1.5">Área legal</label>
+              <select className="w-full border-[1.5px] border-copper/15 rounded-lg px-3.5 py-2.5 font-display text-[13px] text-foreground bg-background outline-none transition-colors focus:border-teal-mid focus:bg-card">
                 <option>Selecciona un área...</option>
                 <option>Derecho Inmobiliario</option>
                 <option>Herencias y Sucesiones</option>
@@ -67,8 +67,8 @@ const ContactSection = () => {
               </select>
             </div>
             <div className="mb-4">
-              <label className="block font-display text-xs font-semibold text-teal-deep mb-1.5">Describe tu situación</label>
-              <textarea placeholder="Cuéntanos qué está pasando con tus palabras. Entre más detalle, mejor orientación podremos darte..." className="w-full border-[1.5px] border-cream-dark rounded-lg px-3.5 py-2.5 font-body text-[13px] text-foreground bg-card outline-none resize-y min-h-[120px] transition-colors focus:border-teal-mid placeholder:text-muted-foreground" />
+              <label className="block font-display text-xs font-semibold text-cream mb-1.5">Describe tu situación</label>
+              <textarea placeholder="Cuéntanos qué está pasando con tus palabras. Entre más detalle, mejor orientación podremos darte..." className="w-full border-[1.5px] border-copper/15 rounded-lg px-3.5 py-2.5 font-body text-[13px] text-foreground bg-card outline-none resize-y min-h-[120px] transition-colors focus:border-teal-mid placeholder:text-muted-foreground" />
             </div>
             <button
               onClick={() => setSubmitted(true)}

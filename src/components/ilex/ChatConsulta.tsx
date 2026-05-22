@@ -217,16 +217,16 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
           Consulta Legal con IA
         </p>
         <h2
-          className="font-display font-extrabold text-teal-deep leading-[1.1] tracking-[-1px] mb-4"
+          className="font-display font-extrabold text-cream leading-[1.1] tracking-[-1px] mb-4"
           style={{ fontSize: "clamp(28px, 4vw, 42px)" }}
         >
           Pregúntame lo que necesitas
         </h2>
-        <p className="text-base text-foreground/70 leading-[1.8] max-w-[560px]">
+        <p className="text-base text-cream/70 leading-[1.8] max-w-[560px]">
           Usa el chat o selecciona un tema. Respondo con inteligencia artificial basada en la legislación vigente de SLP.
         </p>
 
-        <div className="mt-12 max-w-[860px] mx-auto bg-card rounded-[20px] shadow-ilex-lg overflow-hidden border border-cream-dark">
+        <div className="mt-12 max-w-[860px] mx-auto bg-card rounded-[20px] shadow-ilex-lg overflow-hidden border border-copper/15">
           {/* Header */}
           <div
             className="flex items-center gap-3 px-6 py-[18px]"
@@ -247,7 +247,7 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
           </div>
 
           {/* Topics */}
-          <div className="flex gap-2 px-5 py-4 overflow-x-auto border-b border-cream-dark scrollbar-none">
+          <div className="flex gap-2 px-5 py-4 overflow-x-auto border-b border-copper/15 scrollbar-none">
             {chatTopics.map((t) => (
               <button
                 key={t.key}
@@ -256,7 +256,7 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
                 className={`shrink-0 border-[1.5px] font-display text-xs font-medium px-3.5 py-1.5 rounded-full cursor-pointer transition-all whitespace-nowrap disabled:opacity-50 ${
                   activeTopic === t.key
                     ? "bg-teal border-teal text-primary-foreground"
-                    : "bg-transparent border-cream-dark text-foreground/70 hover:bg-teal hover:border-teal hover:text-primary-foreground"
+                    : "bg-transparent border-copper/15 text-cream/70 hover:bg-teal hover:border-teal hover:text-primary-foreground"
                 }`}
               >
                 {t.icon} {t.label}
@@ -287,7 +287,7 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
                   className={`chat-bubble px-4 py-3 text-[13px] leading-[1.7] max-w-[78%] ${
                     msg.role === "user"
                       ? "rounded-[12px_3px_12px_12px] font-display text-primary-foreground/90"
-                      : "rounded-[3px_12px_12px_12px] border border-cream-dark border-t-[3px] border-t-copper text-foreground bg-background"
+                      : "rounded-[3px_12px_12px_12px] border border-copper/15 border-t-[3px] border-t-copper text-foreground bg-background"
                   }`}
                   style={
                     msg.role === "user"
@@ -313,7 +313,7 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
                 <div className="w-[30px] h-[30px] rounded-full shrink-0 flex items-center justify-center bg-teal text-primary-foreground text-sm">
                   🤖
                 </div>
-                <div className="px-4 py-3 bg-background border border-cream-dark rounded-[3px_12px_12px_12px]">
+                <div className="px-4 py-3 bg-background border border-copper/15 rounded-[3px_12px_12px_12px]">
                   <div className="flex gap-1">
                     <div className="w-1.5 h-1.5 rounded-full bg-copper animate-wbounce" />
                     <div className="w-1.5 h-1.5 rounded-full bg-copper animate-wbounce-2" />
@@ -329,8 +329,8 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
                 <div className="w-[30px] h-[30px] rounded-full shrink-0 flex items-center justify-center bg-teal text-primary-foreground text-sm">
                   🤖
                 </div>
-                <div className="px-4 py-3 rounded-[3px_12px_12px_12px] border border-cream-dark border-t-[3px] border-t-copper text-foreground bg-background max-w-[78%]">
-                  <p className="font-display text-[13px] font-semibold text-teal-deep mb-2">
+                <div className="px-4 py-3 rounded-[3px_12px_12px_12px] border border-copper/15 border-t-[3px] border-t-copper text-foreground bg-background max-w-[78%]">
+                  <p className="font-display text-[13px] font-semibold text-cream mb-2">
                     📧 ¿Quieres recibir una copia de esta conversación en tu correo?
                   </p>
                   {!emailInput && emailInput === "" ? (
@@ -343,7 +343,7 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
                       </button>
                       <button
                         onClick={() => { setShowEmailPrompt(false); setEmailSent(true); }}
-                        className="font-display text-xs font-semibold px-4 py-2 rounded-lg bg-muted text-foreground/70 border-none cursor-pointer hover:-translate-y-px transition-all"
+                        className="font-display text-xs font-semibold px-4 py-2 rounded-lg bg-muted text-cream/70 border-none cursor-pointer hover:-translate-y-px transition-all"
                       >
                         No, gracias
                       </button>
@@ -355,7 +355,7 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
                         placeholder="tu@correo.com"
                         value={emailInput === "escribir" ? "" : emailInput}
                         onChange={(e) => setEmailInput(e.target.value)}
-                        className="flex-1 border-[1.5px] border-cream-dark rounded-lg px-3 py-2 font-display text-[13px] text-foreground bg-background outline-none transition-colors focus:border-teal-mid placeholder:text-muted-foreground"
+                        className="flex-1 border-[1.5px] border-copper/15 rounded-lg px-3 py-2 font-display text-[13px] text-foreground bg-background outline-none transition-colors focus:border-teal-mid placeholder:text-muted-foreground"
                       />
                       <button
                         disabled={emailSending || !emailInput || emailInput === "escribir"}
@@ -391,7 +391,7 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
           </div>
 
           {/* Input */}
-          <div className="px-5 py-3.5 border-t border-cream-dark flex gap-2.5">
+          <div className="px-5 py-3.5 border-t border-copper/15 flex gap-2.5">
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -404,7 +404,7 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
               placeholder="Escribe tu duda legal aquí..."
               rows={1}
               disabled={isStreaming}
-              className="flex-1 border-[1.5px] border-cream-dark rounded-lg px-3.5 py-2.5 font-display text-[13px] text-foreground bg-background outline-none resize-none min-h-[42px] max-h-[100px] transition-colors focus:border-teal-mid placeholder:text-muted-foreground disabled:opacity-50"
+              className="flex-1 border-[1.5px] border-copper/15 rounded-lg px-3.5 py-2.5 font-display text-[13px] text-foreground bg-background outline-none resize-none min-h-[42px] max-h-[100px] transition-colors focus:border-teal-mid placeholder:text-muted-foreground disabled:opacity-50"
             />
             <button
               onClick={handleSend}

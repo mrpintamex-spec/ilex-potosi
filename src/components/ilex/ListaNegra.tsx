@@ -79,13 +79,13 @@ const ListaNegra = () => {
   const sorted = [...reportes].sort((a, b) => b.votos - a.votos);
 
   return (
-    <section id="lista-negra" className="py-[90px] px-5 md:px-10 bg-muted/30" ref={ref}>
+    <section id="lista-negra" className="py-[90px] px-5 md:px-10 bg-card" ref={ref}>
       <div className="container">
         <p className="font-display text-[10px] font-bold tracking-[3px] uppercase text-destructive mb-3 reveal">⚠ Lista Negra · Reportes Ciudadanos</p>
-        <h2 className="font-display font-extrabold text-teal-deep leading-[1.1] tracking-[-1px] mb-4 reveal" style={{ fontSize: "clamp(28px, 4vw, 42px)" }}>
+        <h2 className="font-display font-extrabold text-cream leading-[1.1] tracking-[-1px] mb-4 reveal" style={{ fontSize: "clamp(28px, 4vw, 42px)" }}>
           Abogados reportados<br />por la comunidad
         </h2>
-        <p className="text-base text-foreground/70 leading-[1.8] max-w-[560px] mb-8 reveal">
+        <p className="text-base text-cream/70 leading-[1.8] max-w-[560px] mb-8 reveal">
           Espacio para que los ciudadanos de SLP reporten malas prácticas legales. La transparencia protege a todos. Reporta de forma anónima — tu voz cuenta.
         </p>
 
@@ -97,20 +97,20 @@ const ListaNegra = () => {
         </button>
 
         {showForm && (
-          <div className="reveal visible bg-card rounded-2xl p-6 border border-cream-dark mb-8 max-w-[600px]">
-            <h3 className="font-display text-base font-bold text-teal-deep mb-4">Nuevo Reporte Anónimo</h3>
+          <div className="reveal visible bg-card rounded-2xl p-6 border border-copper/15 mb-8 max-w-[600px]">
+            <h3 className="font-display text-base font-bold text-cream mb-4">Nuevo Reporte Anónimo</h3>
             <div className="flex flex-col gap-3">
               <input
                 type="text"
                 placeholder="Nombre del abogado (ej: Lic. Juan Pérez)"
                 value={form.abogado}
                 onChange={(e) => setForm({ ...form, abogado: e.target.value })}
-                className="font-display text-sm px-4 py-3 rounded-lg border border-cream-dark bg-background text-foreground outline-none focus:border-teal transition-all"
+                className="font-display text-sm px-4 py-3 rounded-lg border border-copper/15 bg-background text-foreground outline-none focus:border-teal transition-all"
               />
               <select
                 value={form.motivo}
                 onChange={(e) => setForm({ ...form, motivo: e.target.value })}
-                className="font-display text-sm px-4 py-3 rounded-lg border border-cream-dark bg-background text-foreground outline-none focus:border-teal transition-all"
+                className="font-display text-sm px-4 py-3 rounded-lg border border-copper/15 bg-background text-foreground outline-none focus:border-teal transition-all"
               >
                 <option value="">Selecciona el motivo...</option>
                 <option value="Cobro excesivo sin resultados">Cobro excesivo sin resultados</option>
@@ -126,7 +126,7 @@ const ListaNegra = () => {
                 value={form.descripcion}
                 onChange={(e) => setForm({ ...form, descripcion: e.target.value })}
                 rows={4}
-                className="font-display text-sm px-4 py-3 rounded-lg border border-cream-dark bg-background text-foreground outline-none focus:border-teal transition-all resize-none"
+                className="font-display text-sm px-4 py-3 rounded-lg border border-copper/15 bg-background text-foreground outline-none focus:border-teal transition-all resize-none"
               />
               <button
                 onClick={handleSubmit}
@@ -140,14 +140,14 @@ const ListaNegra = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {sorted.map((r, idx) => (
-            <div key={r.id} className="reveal bg-card rounded-2xl p-6 border border-cream-dark relative transition-all hover:-translate-y-[3px] hover:shadow-ilex-md">
+            <div key={r.id} className="reveal bg-card rounded-2xl p-6 border border-copper/15 relative transition-all hover:-translate-y-[3px] hover:shadow-ilex-md">
               <div className="absolute top-4 right-4 font-display text-[11px] font-bold px-2.5 py-[3px] rounded-xl bg-destructive/10 text-destructive border border-destructive/30">
                 #{idx + 1} Reportado
               </div>
               <div className="text-2xl mb-3">{motivoIcons[r.motivo] || "🚨"}</div>
-              <div className="font-display text-base font-bold text-teal-deep mb-1">{r.abogado}</div>
+              <div className="font-display text-base font-bold text-cream mb-1">{r.abogado}</div>
               <div className="font-display text-xs font-semibold text-destructive mb-2">{r.motivo}</div>
-              <p className="text-sm text-foreground/70 leading-[1.7] mb-3">{r.descripcion}</p>
+              <p className="text-sm text-cream/70 leading-[1.7] mb-3">{r.descripcion}</p>
               <div className="font-display text-[11px] text-muted-foreground mb-4">Reportado: {r.fecha}</div>
               <div className="flex items-center gap-3">
                 <button
@@ -155,7 +155,7 @@ const ListaNegra = () => {
                   disabled={votados.includes(r.id)}
                   className={`font-display text-xs font-semibold px-4 py-2 rounded-lg border cursor-pointer transition-all flex items-center gap-1.5 ${
                     votados.includes(r.id)
-                      ? "bg-muted border-cream-dark text-muted-foreground cursor-default"
+                      ? "bg-muted border-copper/15 text-muted-foreground cursor-default"
                       : "bg-destructive/10 border-destructive/30 text-destructive hover:bg-destructive hover:text-primary-foreground"
                   }`}
                 >
@@ -167,9 +167,9 @@ const ListaNegra = () => {
           ))}
         </div>
 
-        <div className="reveal mt-10 rounded-2xl p-8 px-10 bg-card border border-cream-dark text-center">
-          <p className="font-display text-sm text-foreground/60 leading-[1.8] max-w-[500px] mx-auto">
-            <strong className="text-teal-deep">⚖️ Aviso:</strong> Los reportes aquí publicados son opiniones de ciudadanos. iLEX POTOSÍ no verifica la veracidad de cada reporte. Si eres abogado y consideras que un reporte es falso, <a href="mailto:iLEX.POTOSI@protonmail.com" className="text-copper font-semibold no-underline hover:underline">contáctanos</a> para solicitar su revisión.
+        <div className="reveal mt-10 rounded-2xl p-8 px-10 bg-card border border-copper/15 text-center">
+          <p className="font-display text-sm text-cream/60 leading-[1.8] max-w-[500px] mx-auto">
+            <strong className="text-cream">⚖️ Aviso:</strong> Los reportes aquí publicados son opiniones de ciudadanos. iLEX POTOSÍ no verifica la veracidad de cada reporte. Si eres abogado y consideras que un reporte es falso, <a href="mailto:iLEX.POTOSI@protonmail.com" className="text-copper font-semibold no-underline hover:underline">contáctanos</a> para solicitar su revisión.
           </p>
         </div>
       </div>

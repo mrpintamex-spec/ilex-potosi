@@ -44,10 +44,10 @@ const Directorio = ({ onOpenRegistro }: DirectorioProps) => {
     <section id="directorio" className="py-[90px] px-5 md:px-10 bg-background" ref={ref}>
       <div className="container">
         <p className="font-display text-[10px] font-bold tracking-[3px] uppercase text-copper mb-3">Directorio de Abogados</p>
-        <h2 className="font-display font-extrabold text-teal-deep leading-[1.1] tracking-[-1px] mb-4" style={{ fontSize: "clamp(28px, 4vw, 42px)" }}>
+        <h2 className="font-display font-extrabold text-cream leading-[1.1] tracking-[-1px] mb-4" style={{ fontSize: "clamp(28px, 4vw, 42px)" }}>
           Abogados en SLP verificados<br />por usuarios reales
         </h2>
-        <p className="text-base text-foreground/70 leading-[1.8] max-w-[560px]">
+        <p className="text-base text-cream/70 leading-[1.8] max-w-[560px]">
           Ranking basado únicamente en reseñas de clientes reales. Los mejor calificados aparecen primero. Los peores también se ven — aquí nadie se esconde.
         </p>
 
@@ -57,7 +57,7 @@ const Directorio = ({ onOpenRegistro }: DirectorioProps) => {
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
               className={`font-display text-xs font-semibold px-4 py-[7px] rounded-full border-[1.5px] cursor-pointer transition-all ${
-                activeTab === tab.key ? "bg-teal border-teal text-primary-foreground" : "bg-transparent border-cream-dark text-foreground/70 hover:bg-teal hover:border-teal hover:text-primary-foreground"
+                activeTab === tab.key ? "bg-teal border-teal text-primary-foreground" : "bg-transparent border-copper/15 text-cream/70 hover:bg-teal hover:border-teal hover:text-primary-foreground"
               }`}
             >
               {tab.label}
@@ -67,14 +67,14 @@ const Directorio = ({ onOpenRegistro }: DirectorioProps) => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {filtered.map((abo) => (
-            <div key={abo.name} className="reveal bg-card rounded-2xl p-6 border border-cream-dark relative transition-all hover:-translate-y-[3px] hover:shadow-ilex-md">
+            <div key={abo.name} className="reveal bg-card rounded-2xl p-6 border border-copper/15 relative transition-all hover:-translate-y-[3px] hover:shadow-ilex-md">
               <div className={`absolute top-4 right-4 font-display text-[11px] font-bold px-2.5 py-[3px] rounded-xl ${rankStyles[abo.rankClass] || ""}`}>
                 {abo.rank}
               </div>
               <div className="w-14 h-14 rounded-full flex items-center justify-center font-display text-xl font-extrabold text-primary-foreground mb-3.5" style={{ background: "linear-gradient(135deg, hsl(var(--teal)), hsl(var(--teal-mid)))" }}>
                 {abo.initials}
               </div>
-              <div className="font-display text-base font-bold text-teal-deep mb-1">{abo.name}</div>
+              <div className="font-display text-base font-bold text-cream mb-1">{abo.name}</div>
               <div className="font-display text-xs font-medium text-copper mb-3">{abo.esp}</div>
               <div className="flex gap-[3px] mb-2">
                 {Array.from({ length: 5 }).map((_, i) => (
