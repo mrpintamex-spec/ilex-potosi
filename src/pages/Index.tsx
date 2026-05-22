@@ -7,12 +7,14 @@ import { KB, topicLabels } from "@/components/ilex/knowledgeBase";
 
 // Lazy-load secciones below-the-fold para reducir el bundle inicial
 const ChatConsulta = lazy(() => import("@/components/ilex/ChatConsulta"));
+const DiagnosticoLegal = lazy(() => import("@/components/ilex/DiagnosticoLegal"));
 const AreasLegales = lazy(() => import("@/components/ilex/AreasLegales"));
 const Directorio = lazy(() => import("@/components/ilex/Directorio"));
 const ListaNegra = lazy(() => import("@/components/ilex/ListaNegra"));
 const DocumentosLegales = lazy(() => import("@/components/ilex/DocumentosLegales"));
 const UrgentHelp = lazy(() => import("@/components/ilex/UrgentHelp"));
 const VotingSection = lazy(() => import("@/components/ilex/VotingSection"));
+const Testimonios = lazy(() => import("@/components/ilex/Testimonios"));
 const ContactSection = lazy(() => import("@/components/ilex/ContactSection"));
 const Footer = lazy(() => import("@/components/ilex/Footer"));
 const RegistroModal = lazy(() => import("@/components/ilex/RegistroModal"));
@@ -45,16 +47,16 @@ const Index = () => {
       <HeroSection onSearch={handleHeroSearch} />
       <WhySection />
       <Suspense fallback={<Fallback />}>
-        <AdBanner slot="after-why" />
         <ChatConsulta pendingQuery={pendingQuery} onQueryConsumed={handleQueryConsumed} />
+        <DiagnosticoLegal />
+        <DocumentosLegales />
         <AreasLegales onAreaClick={handleAreaClick} />
         <AdBanner slot="after-areas" />
         <Directorio onOpenRegistro={() => setRegistroOpen(true)} />
         <ListaNegra />
-        <AdBanner slot="after-lista" />
-        <DocumentosLegales />
         <UrgentHelp />
         <VotingSection />
+        <Testimonios />
         <AdBanner slot="after-voting" />
         <ContactSection />
         <Footer />
