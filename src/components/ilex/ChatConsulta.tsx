@@ -238,10 +238,10 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
             <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
             <div className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
             <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
-            <h3 className="font-display text-sm font-bold text-primary-foreground flex-1">
+            <h3 className="font-display text-sm font-bold text-cream flex-1">
               🤖⚖ iLEX POTOSÍ — Asesor Legal IA
             </h3>
-            <span className="font-display text-[10px] text-primary-foreground/50 tracking-[1px]">
+            <span className="font-display text-[10px] text-cream/50 tracking-[1px]">
               {isStreaming ? "● PENSANDO..." : "● EN LÍNEA"}
             </span>
           </div>
