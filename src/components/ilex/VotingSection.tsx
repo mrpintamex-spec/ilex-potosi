@@ -36,7 +36,7 @@ const VotingSection = () => {
           <h2 className="font-display font-extrabold leading-[1.1] tracking-[-1px] mb-4" style={{ fontSize: "clamp(28px, 4vw, 42px)", color: "#f5f0e8" }}>
             ¿Qué tema legal quieres<br />que agreguemos?
           </h2>
-          <p className="font-display text-[15px] text-primary-foreground/60 max-w-[520px] mx-auto leading-[1.7]">
+          <p className="font-display text-[15px] text-cream/70 max-w-[520px] mx-auto leading-[1.7]">
             Cada mes publicamos 3 temas propuestos. El más votado por la comunidad se integra a iLEX POTOSÍ el siguiente mes.
           </p>
         </div>
@@ -52,23 +52,23 @@ const VotingSection = () => {
                 className={`rounded-2xl p-7 px-6 cursor-pointer transition-all text-center border hover:-translate-y-[3px] ${
                   isVoted
                     ? "border-copper bg-copper/[0.12]"
-                    : "border-primary-foreground/10 bg-primary-foreground/[0.06] hover:bg-primary-foreground/10 hover:border-copper/40"
+                    : "border-cream/10 bg-cream/[0.04] hover:bg-cream/10 hover:border-copper/40"
                 }`}
               >
                 <div className="text-4xl mb-3">{t.icon}</div>
                 <div className="font-display text-[17px] font-bold mb-2" style={{ color: "#f5f0e8" }}>{t.title}</div>
-                <div className="font-display text-[12.5px] text-primary-foreground/50 leading-relaxed mb-4">{t.desc}</div>
-                <div className="bg-primary-foreground/10 rounded-full h-1.5 mb-2 overflow-hidden">
+                <div className="font-display text-[12.5px] text-cream/60 leading-relaxed mb-4">{t.desc}</div>
+                <div className="bg-cream/10 rounded-full h-1.5 mb-2 overflow-hidden">
                   <div className="h-full rounded-full transition-all duration-500" style={{ width: `${pct}%`, background: "linear-gradient(90deg, hsl(var(--copper)), #e8a040)" }} />
                 </div>
-                <div className="font-display text-[11px] text-primary-foreground/40 mb-4">{votos[t.id] || 0} votos ({pct}%)</div>
+                <div className="font-display text-[11px] text-cream/50 mb-4">{votos[t.id] || 0} votos ({pct}%)</div>
                 <button
                   disabled={!!yaVote}
                   className={`w-full font-display text-[13px] font-bold py-2.5 px-5 rounded-lg border-none cursor-pointer transition-all ${
                     isVoted
                       ? "bg-ilex-green text-primary-foreground"
                       : yaVote
-                      ? "bg-primary-foreground/20 text-primary-foreground/50 cursor-default"
+                      ? "bg-primary-foreground/20 text-cream/60 cursor-default"
                       : "bg-copper text-primary-foreground hover:bg-[#d4933a]"
                   }`}
                 >
@@ -78,7 +78,7 @@ const VotingSection = () => {
             );
           })}
         </div>
-        <p className="text-center font-display text-xs text-primary-foreground/30">Un voto por dispositivo · Los resultados se renuevan cada mes</p>
+        <p className="text-center font-display text-xs text-cream/40">Un voto por dispositivo · Los resultados se renuevan cada mes</p>
       </div>
     </section>
   );
