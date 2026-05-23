@@ -70,15 +70,15 @@ const UrgentHelp = () => {
                       toast.success("¡Enlace copiado al portapapeles!");
                     }
                   }}
-                  className="font-display text-xs font-semibold px-5 py-2.5 rounded-lg bg-teal text-primary-foreground border-none cursor-pointer hover:-translate-y-px transition-all">
+                  className="font-display text-xs font-semibold px-5 py-2.5 rounded-lg bg-copper text-primary-foreground border-none cursor-pointer hover:bg-copper/90 hover:-translate-y-px transition-all">
                   📋 Copiar enlace
                 </button>
               </div>
             </div>
 
-            <div className="rounded-2xl p-6 px-7" style={{ background: "linear-gradient(135deg, hsl(var(--teal-deep)), hsl(var(--teal)))" }}>
-              <div className="font-display text-[15px] font-bold text-primary-foreground mb-1.5">Si te fue de ayuda, por favor comparte nuestra web</div>
-              <div className="font-display text-[13px] text-primary-foreground/60 leading-[1.7]">
+            <div className="rounded-2xl p-6 px-7 border border-copper/20" style={{ background: "linear-gradient(135deg, hsl(var(--teal-mid)), hsl(var(--teal-lit)))" }}>
+              <div className="font-display text-[15px] font-bold text-cream mb-1.5">Si te fue de ayuda, por favor comparte nuestra web</div>
+              <div className="font-display text-[13px] text-cream/70 leading-[1.7]">
                 Entre más personas la conozcan, más gente en SLP puede resolver sus dudas legales sin costo.
               </div>
             </div>

@@ -22,8 +22,9 @@ const AdBanner = ({ slot = "horizontal" }: { slot?: string }) => {
   }, []);
 
   return (
-    <div className="w-full bg-muted/50 border-y border-border">
+    <div className="w-full bg-card border-y border-copper/15">
       <div className="container max-w-[728px] mx-auto py-3 px-4 text-center">
+        <p className="font-display text-[9px] tracking-[2px] uppercase text-cream/30 mb-1.5">Publicidad</p>
         <div ref={adRef}>
           <ins
             className="adsbygoogle"

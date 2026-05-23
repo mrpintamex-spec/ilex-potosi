@@ -238,10 +238,10 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
             <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
             <div className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
             <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
-            <h3 className="font-display text-sm font-bold text-primary-foreground flex-1">
+            <h3 className="font-display text-sm font-bold text-cream flex-1">
               🤖⚖ iLEX POTOSÍ — Asesor Legal IA
             </h3>
-            <span className="font-display text-[10px] text-primary-foreground/50 tracking-[1px]">
+            <span className="font-display text-[10px] text-cream/50 tracking-[1px]">
               {isStreaming ? "● PENSANDO..." : "● EN LÍNEA"}
             </span>
           </div>
@@ -255,8 +255,8 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
                 disabled={isStreaming}
                 className={`shrink-0 border-[1.5px] font-display text-xs font-medium px-3.5 py-1.5 rounded-full cursor-pointer transition-all whitespace-nowrap disabled:opacity-50 ${
                   activeTopic === t.key
-                    ? "bg-teal border-teal text-primary-foreground"
-                    : "bg-transparent border-copper/15 text-cream/70 hover:bg-teal hover:border-teal hover:text-primary-foreground"
+                    ? "bg-copper border-copper text-primary-foreground"
+                    : "bg-transparent border-copper/25 text-cream/70 hover:bg-copper hover:border-copper hover:text-primary-foreground"
                 }`}
               >
                 {t.icon} {t.label}
@@ -278,7 +278,7 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
                   className={`w-[30px] h-[30px] rounded-full shrink-0 flex items-center justify-center font-display text-[11px] font-extrabold mt-0.5 ${
                     msg.role === "user"
                       ? "bg-copper text-primary-foreground"
-                      : "bg-teal text-primary-foreground text-sm"
+                      : "bg-copper/20 text-copper text-sm border border-copper/40"
                   }`}
                 >
                   {msg.role === "user" ? "TÚ" : "🤖"}
@@ -286,14 +286,14 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
                 <div
                   className={`chat-bubble px-4 py-3 text-[13px] leading-[1.7] max-w-[78%] ${
                     msg.role === "user"
-                      ? "rounded-[12px_3px_12px_12px] font-display text-primary-foreground/90"
+                      ? "rounded-[12px_3px_12px_12px] font-display text-cream"
                       : "rounded-[3px_12px_12px_12px] border border-copper/15 border-t-[3px] border-t-copper text-foreground bg-background"
                   }`}
                   style={
                     msg.role === "user"
                       ? {
                           background:
-                            "linear-gradient(135deg, hsl(var(--teal-deep)), hsl(var(--teal)))",
+                            "linear-gradient(135deg, hsl(var(--teal-mid)), hsl(var(--teal-lit)))",
                         }
                       : undefined
                   }
@@ -310,7 +310,7 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
             ))}
             {isStreaming && messages[messages.length - 1]?.role === "user" && (
               <div className="flex gap-2.5">
-                <div className="w-[30px] h-[30px] rounded-full shrink-0 flex items-center justify-center bg-teal text-primary-foreground text-sm">
+                <div className="w-[30px] h-[30px] rounded-full shrink-0 flex items-center justify-center bg-copper/20 text-copper border border-copper/40 text-sm">
                   🤖
                 </div>
                 <div className="px-4 py-3 bg-background border border-copper/15 rounded-[3px_12px_12px_12px]">
@@ -326,7 +326,7 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
             {/* Email transcript prompt */}
             {showEmailPrompt && !emailSent && !isStreaming && (
               <div className="flex gap-2.5">
-                <div className="w-[30px] h-[30px] rounded-full shrink-0 flex items-center justify-center bg-teal text-primary-foreground text-sm">
+                <div className="w-[30px] h-[30px] rounded-full shrink-0 flex items-center justify-center bg-copper/20 text-copper border border-copper/40 text-sm">
                   🤖
                 </div>
                 <div className="px-4 py-3 rounded-[3px_12px_12px_12px] border border-copper/15 border-t-[3px] border-t-copper text-foreground bg-background max-w-[78%]">
@@ -420,34 +420,35 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
       {/* Chat markdown styles */}
       <style>{`
         .chat-md h1, .chat-md h2, .chat-md h3, .chat-md h4 {
-          font-family: 'Outfit', sans-serif;
-          color: hsl(var(--teal));
+          font-family: var(--font-display);
+          color: hsl(var(--copper));
           margin: 10px 0 5px;
-          font-size: 13px;
+          font-size: 14px;
           font-weight: 700;
           text-transform: uppercase;
           letter-spacing: 0.5px;
           padding-bottom: 3px;
-          border-bottom: 1.5px solid hsl(var(--copper));
+          border-bottom: 1.5px solid hsl(var(--copper) / 0.4);
         }
         .chat-md h1:first-child, .chat-md h2:first-child, .chat-md h3:first-child { margin-top: 0; }
-        .chat-md p { margin: 4px 0; font-size: 13px; }
-        .chat-md ul, .chat-md ol { margin: 4px 0; padding-left: 18px; font-size: 12.5px; }
+        .chat-md p { margin: 4px 0; font-size: 13px; color: hsl(var(--cream) / 0.9); }
+        .chat-md ul, .chat-md ol { margin: 4px 0; padding-left: 18px; font-size: 12.5px; color: hsl(var(--cream) / 0.85); }
         .chat-md li { margin: 2px 0; }
-        .chat-md strong, .chat-md b { color: hsl(var(--teal)); font-weight: 700; }
+        .chat-md strong, .chat-md b { color: hsl(var(--copper)); font-weight: 700; }
+        .chat-md a { color: hsl(var(--copper)); text-decoration: underline; }
         .chat-md code {
-          font-size: 10px; font-weight: 600;
-          background: hsl(var(--teal-pale)); color: hsl(var(--teal));
+          font-size: 11px; font-weight: 600;
+          background: hsl(var(--copper) / 0.12); color: hsl(var(--copper));
           padding: 2px 6px; border-radius: 4px;
-          border: 1px solid hsla(var(--teal), 0.2);
+          border: 1px solid hsl(var(--copper) / 0.25);
         }
         .chat-md blockquote {
-          background: hsl(var(--green-pale)); border-left: 3px solid hsl(var(--green));
+          background: hsl(var(--copper) / 0.08); border-left: 3px solid hsl(var(--copper));
           border-radius: 4px; padding: 8px 12px; margin: 8px 0;
-          font-size: 12px; color: #0f4028;
+          font-size: 12px; color: hsl(var(--cream) / 0.85);
         }
         .chat-md hr {
-          border: none; border-top: 1px solid hsl(var(--cream-dark)); margin: 8px 0;
+          border: none; border-top: 1px solid hsl(var(--copper) / 0.2); margin: 8px 0;
         }
       `}</style>
     </section>
