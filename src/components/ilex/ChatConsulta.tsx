@@ -255,8 +255,8 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
                 disabled={isStreaming}
                 className={`shrink-0 border-[1.5px] font-display text-xs font-medium px-3.5 py-1.5 rounded-full cursor-pointer transition-all whitespace-nowrap disabled:opacity-50 ${
                   activeTopic === t.key
-                    ? "bg-teal border-teal text-primary-foreground"
-                    : "bg-transparent border-copper/15 text-cream/70 hover:bg-teal hover:border-teal hover:text-primary-foreground"
+                    ? "bg-copper border-copper text-primary-foreground"
+                    : "bg-transparent border-copper/25 text-cream/70 hover:bg-copper hover:border-copper hover:text-primary-foreground"
                 }`}
               >
                 {t.icon} {t.label}
