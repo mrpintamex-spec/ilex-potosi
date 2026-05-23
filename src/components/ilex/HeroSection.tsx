@@ -1,4 +1,5 @@
 import { useState } from "react";
+import heroBg from "@/assets/ilex-hero-bg.png";
 
 interface HeroSectionProps {
   onSearch: (query: string) => void;
@@ -16,7 +17,13 @@ const HeroSection = ({ onSearch }: HeroSectionProps) => {
   return (
     <section
       id="inicio"
-      className="bg-topo min-h-screen flex items-center justify-center px-5 md:px-10 pt-24 pb-16 relative overflow-hidden"
+      className="min-h-screen flex items-center justify-center px-5 md:px-10 pt-24 pb-16 relative overflow-hidden"
+      style={{
+        backgroundImage: `linear-gradient(hsla(195, 40%, 5%, 0.72), hsla(195, 40%, 5%, 0.88)), url(${heroBg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed",
+      }}
     >
       <div className="relative z-10 max-w-[920px] text-center">
         <div className="animate-fade-up-1 inline-flex items-center gap-2 border border-copper/40 text-copper font-sans text-[10px] font-semibold tracking-[3px] uppercase px-4 py-1.5 rounded-full mb-8">
