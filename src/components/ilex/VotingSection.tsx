@@ -68,7 +68,7 @@ const VotingSection = () => {
                     isVoted
                       ? "bg-ilex-green text-primary-foreground"
                       : yaVote
-                      ? "bg-primary-foreground/20 text-cream/60 cursor-default"
+                      ? "bg-cream/10 text-cream/40 cursor-default"
                       : "bg-copper text-primary-foreground hover:bg-[#d4933a]"
                   }`}
                 >
