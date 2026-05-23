@@ -19,10 +19,10 @@ const SplashScreen = () => {
       style={{ background: "linear-gradient(150deg, #071e25 0%, #0b2e38 50%, #071e25 100%)" }}
     >
       <img src={ilexLogo} alt="iLEX POTOSÍ Logo" className="w-28 h-28 rounded-full object-cover shadow-ilex-lg" style={{ animation: "splashIn 0.6s ease 0.3s both" }} />
-      <div className="font-display font-black text-3xl text-primary-foreground tracking-[-1px]" style={{ animation: "splashIn 0.6s ease 0.6s both" }}>
+      <div className="font-display font-black text-3xl text-cream tracking-[-1px]" style={{ animation: "splashIn 0.6s ease 0.6s both" }}>
         iLEX <span className="text-copper">POTOSÍ</span>
       </div>
-      <div className="font-display text-xs text-primary-foreground/40 tracking-[3px] uppercase" style={{ animation: "splashIn 0.6s ease 0.9s both" }}>
+      <div className="font-display text-xs text-cream/50 tracking-[3px] uppercase" style={{ animation: "splashIn 0.6s ease 0.9s both" }}>
         Asesor Legal Inteligente
       </div>
       <div className="flex gap-1 mt-4" style={{ animation: "splashIn 0.6s ease 1.2s both" }}>
