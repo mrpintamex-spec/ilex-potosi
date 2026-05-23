@@ -278,7 +278,7 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
                   className={`w-[30px] h-[30px] rounded-full shrink-0 flex items-center justify-center font-display text-[11px] font-extrabold mt-0.5 ${
                     msg.role === "user"
                       ? "bg-copper text-primary-foreground"
-                      : "bg-teal text-primary-foreground text-sm"
+                      : "bg-copper/20 text-copper text-sm border border-copper/40"
                   }`}
                 >
                   {msg.role === "user" ? "TÚ" : "🤖"}
@@ -286,14 +286,14 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
                 <div
                   className={`chat-bubble px-4 py-3 text-[13px] leading-[1.7] max-w-[78%] ${
                     msg.role === "user"
-                      ? "rounded-[12px_3px_12px_12px] font-display text-primary-foreground/90"
+                      ? "rounded-[12px_3px_12px_12px] font-display text-cream"
                       : "rounded-[3px_12px_12px_12px] border border-copper/15 border-t-[3px] border-t-copper text-foreground bg-background"
                   }`}
                   style={
                     msg.role === "user"
                       ? {
                           background:
-                            "linear-gradient(135deg, hsl(var(--teal-deep)), hsl(var(--teal)))",
+                            "linear-gradient(135deg, hsl(var(--teal-mid)), hsl(var(--teal-lit)))",
                         }
                       : undefined
                   }
