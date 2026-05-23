@@ -420,34 +420,35 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
       {/* Chat markdown styles */}
       <style>{`
         .chat-md h1, .chat-md h2, .chat-md h3, .chat-md h4 {
-          font-family: 'Outfit', sans-serif;
-          color: hsl(var(--teal));
+          font-family: var(--font-display);
+          color: hsl(var(--copper));
           margin: 10px 0 5px;
-          font-size: 13px;
+          font-size: 14px;
           font-weight: 700;
           text-transform: uppercase;
           letter-spacing: 0.5px;
           padding-bottom: 3px;
-          border-bottom: 1.5px solid hsl(var(--copper));
+          border-bottom: 1.5px solid hsl(var(--copper) / 0.4);
         }
         .chat-md h1:first-child, .chat-md h2:first-child, .chat-md h3:first-child { margin-top: 0; }
-        .chat-md p { margin: 4px 0; font-size: 13px; }
-        .chat-md ul, .chat-md ol { margin: 4px 0; padding-left: 18px; font-size: 12.5px; }
+        .chat-md p { margin: 4px 0; font-size: 13px; color: hsl(var(--cream) / 0.9); }
+        .chat-md ul, .chat-md ol { margin: 4px 0; padding-left: 18px; font-size: 12.5px; color: hsl(var(--cream) / 0.85); }
         .chat-md li { margin: 2px 0; }
-        .chat-md strong, .chat-md b { color: hsl(var(--teal)); font-weight: 700; }
+        .chat-md strong, .chat-md b { color: hsl(var(--copper)); font-weight: 700; }
+        .chat-md a { color: hsl(var(--copper)); text-decoration: underline; }
         .chat-md code {
-          font-size: 10px; font-weight: 600;
-          background: hsl(var(--teal-pale)); color: hsl(var(--teal));
+          font-size: 11px; font-weight: 600;
+          background: hsl(var(--copper) / 0.12); color: hsl(var(--copper));
           padding: 2px 6px; border-radius: 4px;
-          border: 1px solid hsla(var(--teal), 0.2);
+          border: 1px solid hsl(var(--copper) / 0.25);
         }
         .chat-md blockquote {
-          background: hsl(var(--green-pale)); border-left: 3px solid hsl(var(--green));
+          background: hsl(var(--copper) / 0.08); border-left: 3px solid hsl(var(--copper));
           border-radius: 4px; padding: 8px 12px; margin: 8px 0;
-          font-size: 12px; color: #0f4028;
+          font-size: 12px; color: hsl(var(--cream) / 0.85);
         }
         .chat-md hr {
-          border: none; border-top: 1px solid hsl(var(--cream-dark)); margin: 8px 0;
+          border: none; border-top: 1px solid hsl(var(--copper) / 0.2); margin: 8px 0;
         }
       `}</style>
     </section>
