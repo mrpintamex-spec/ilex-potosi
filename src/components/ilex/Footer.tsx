@@ -21,12 +21,13 @@ const Footer = () => {
           <ul className="list-none grid gap-2">
             <li><a href="/aviso-privacidad" className="font-sans text-[13px] text-cream/55 no-underline hover:text-copper transition-colors">Aviso de Privacidad</a></li>
             <li><a href="/terminos-uso" className="font-sans text-[13px] text-cream/55 no-underline hover:text-copper transition-colors">Términos de Uso</a></li>
-            <li><a href="mailto:iLEX.POTOSI@protonmail.com" className="font-sans text-[13px] text-cream/55 no-underline hover:text-copper transition-colors">Email</a></li>
+            <li><a href="https://ilex-potosi.com" className="font-sans text-[13px] text-cream/55 no-underline hover:text-copper transition-colors">ilex-potosi.com</a></li>
+            <li><a href="mailto:iLEX.POTOSI@protonmail.com" className="font-sans text-[13px] text-cream/55 no-underline hover:text-copper transition-colors">iLEX.POTOSI@protonmail.com</a></li>
           </ul>
         </div>
       </div>
       <div className="max-w-[1200px] mx-auto flex justify-between items-center flex-wrap gap-3">
-        <p className="font-sans text-[11px] text-cream/30">© 2025 <span className="text-copper">iLEX POTOSÍ</span> · Desarrollado por <span className="text-copper">ViBeSLP</span> · San Luis Potosí, México</p>
+        <p className="font-sans text-[11px] text-cream/30">© 2025 <span className="text-copper">iLEX POTOSÍ</span> · <a href="https://ilex-potosi.com" className="text-copper hover:underline">ilex-potosi.com</a> · <a href="mailto:iLEX.POTOSI@protonmail.com" className="text-copper hover:underline">iLEX.POTOSI@protonmail.com</a> · San Luis Potosí, México</p>
         <p className="font-sans text-[11px] text-cream/30">La información es orientativa. No sustituye asesoría jurídica profesional.</p>
       </div>
     </footer>

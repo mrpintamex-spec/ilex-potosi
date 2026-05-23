@@ -18,6 +18,7 @@ const ContactSection = () => {
           <div className="grid gap-5">
             {[
               { icon: "✉️", title: "Correo electrónico", content: <a href="mailto:iLEX.POTOSI@protonmail.com" className="font-display text-[13px] text-cream/70 no-underline hover:text-copper transition-colors">iLEX.POTOSI@protonmail.com</a> },
+              { icon: "🌐", title: "Sitio web", content: <a href="https://ilex-potosi.com" className="font-display text-[13px] text-cream/70 no-underline hover:text-copper transition-colors">ilex-potosi.com</a> },
               { icon: "📍", title: "Cobertura", content: <p className="font-display text-[13px] text-cream/70">San Luis Potosí (Capital y municipios) · Ciudad de México</p> },
               { icon: "⏰", title: "Tiempo de respuesta", content: <p className="font-display text-[13px] text-cream/70">Consulta en chat: inmediata · Correo: menos de 24 hrs</p> },
             ].map((item) => (
