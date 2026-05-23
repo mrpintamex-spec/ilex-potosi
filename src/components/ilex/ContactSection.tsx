@@ -23,7 +23,7 @@ const ContactSection = () => {
               { icon: "⏰", title: "Tiempo de respuesta", content: <p className="font-display text-[13px] text-cream/70">Consulta en chat: inmediata · Correo: menos de 24 hrs</p> },
             ].map((item) => (
               <div key={item.title} className="flex gap-4 items-start p-5 bg-background rounded-xl transition-all hover:shadow-ilex-sm">
-                <div className="w-11 h-11 bg-teal rounded-[10px] flex items-center justify-center text-xl shrink-0">{item.icon}</div>
+                <div className="w-11 h-11 bg-copper/15 border border-copper/30 rounded-[10px] flex items-center justify-center text-xl shrink-0">{item.icon}</div>
                 <div>
                   <h4 className="font-display text-sm font-bold text-cream mb-1">{item.title}</h4>
                   {item.content}
