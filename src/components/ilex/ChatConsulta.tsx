@@ -310,7 +310,7 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
             ))}
             {isStreaming && messages[messages.length - 1]?.role === "user" && (
               <div className="flex gap-2.5">
-                <div className="w-[30px] h-[30px] rounded-full shrink-0 flex items-center justify-center bg-teal text-primary-foreground text-sm">
+                <div className="w-[30px] h-[30px] rounded-full shrink-0 flex items-center justify-center bg-copper/20 text-copper border border-copper/40 text-sm">
                   🤖
                 </div>
                 <div className="px-4 py-3 bg-background border border-copper/15 rounded-[3px_12px_12px_12px]">
@@ -326,7 +326,7 @@ const ChatConsulta = ({ pendingQuery, onQueryConsumed }: ChatConsultaProps) => {
             {/* Email transcript prompt */}
             {showEmailPrompt && !emailSent && !isStreaming && (
               <div className="flex gap-2.5">
-                <div className="w-[30px] h-[30px] rounded-full shrink-0 flex items-center justify-center bg-teal text-primary-foreground text-sm">
+                <div className="w-[30px] h-[30px] rounded-full shrink-0 flex items-center justify-center bg-copper/20 text-copper border border-copper/40 text-sm">
                   🤖
                 </div>
                 <div className="px-4 py-3 rounded-[3px_12px_12px_12px] border border-copper/15 border-t-[3px] border-t-copper text-foreground bg-background max-w-[78%]">
