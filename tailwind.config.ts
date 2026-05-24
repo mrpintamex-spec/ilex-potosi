@@ -16,7 +16,8 @@ export default {
       fontFamily: {
         display: ['Cormorant Garamond', 'Georgia', 'serif'],
         body: ['Lora', 'Georgia', 'serif'],
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Roboto Condensed', 'Inter', 'sans-serif'],
+        condensed: ['Roboto Condensed', 'sans-serif'],
         script: ['Allura', 'cursive'],
       },
       colors: {

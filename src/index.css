@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Allura&family=Inter:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Allura&family=Inter:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&family=Roboto+Condensed:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,57 +6,57 @@
 
 @layer base {
   :root {
-    /* Dark elegant base — inspired by ilex-potosi-web.base44 */
-    --background: 195 35% 7%;             /* deep navy-teal */
-    --foreground: 40 30% 92%;             /* warm cream */
+    /* Brand identity — Dark Teal + Rose Gold */
+    --background: 190 50% 9%;             /* deep dark teal */
+    --foreground: 30 25% 92%;             /* warm cream */
 
-    --card: 195 30% 10%;
-    --card-foreground: 40 30% 92%;
+    --card: 190 45% 12%;
+    --card-foreground: 30 25% 92%;
 
-    --popover: 195 35% 8%;
-    --popover-foreground: 40 30% 92%;
+    --popover: 190 50% 10%;
+    --popover-foreground: 30 25% 92%;
 
-    --primary: 40 65% 55%;                /* gold */
-    --primary-foreground: 195 35% 7%;
+    --primary: 25 45% 65%;                /* rose gold */
+    --primary-foreground: 190 50% 9%;
 
-    --secondary: 195 25% 14%;
-    --secondary-foreground: 40 30% 92%;
+    --secondary: 190 35% 16%;
+    --secondary-foreground: 30 25% 92%;
 
-    --muted: 195 20% 16%;
-    --muted-foreground: 40 15% 65%;
+    --muted: 190 30% 18%;
+    --muted-foreground: 30 15% 70%;
 
-    --accent: 40 65% 55%;                 /* gold */
-    --accent-foreground: 195 35% 7%;
+    --accent: 25 45% 65%;                 /* rose gold */
+    --accent-foreground: 190 50% 9%;
 
     --destructive: 0 65% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 195 20% 18%;
-    --input: 195 20% 18%;
-    --ring: 40 65% 55%;
+    --border: 190 30% 20%;
+    --input: 190 30% 20%;
+    --ring: 25 45% 65%;
 
     --radius: 0.5rem;
 
-    /* iLEX custom tokens — repurposed for dark palette */
-    --teal-deep: 195 40% 5%;
-    --teal: 195 35% 12%;
-    --teal-mid: 195 30% 18%;
-    --teal-lit: 195 25% 24%;
-    --teal-pale: 195 20% 18%;
-    --copper: 40 65% 55%;                 /* gold */
-    --copper-dark: 35 55% 42%;
-    --copper-pale: 40 30% 18%;
-    --cream: 40 30% 92%;
-    --cream-dark: 195 20% 22%;
+    /* iLEX custom tokens — dark teal + rose gold */
+    --teal-deep: 190 55% 6%;
+    --teal: 190 50% 11%;
+    --teal-mid: 190 42% 17%;
+    --teal-lit: 190 35% 24%;
+    --teal-pale: 190 30% 20%;
+    --copper: 25 48% 65%;                 /* rose gold */
+    --copper-dark: 22 40% 50%;
+    --copper-pale: 25 30% 22%;
+    --cream: 30 25% 92%;
+    --cream-dark: 190 25% 25%;
     --green: 153 40% 35%;
-    --green-pale: 195 20% 16%;
+    --green-pale: 190 25% 18%;
     --red: 0 65% 50%;
     --red-pale: 0 30% 18%;
     --fb-blue: 214 89% 52%;
 
     --font-display: 'Cormorant Garamond', Georgia, serif;
     --font-script: 'Allura', cursive;
-    --font-sans: 'Inter', sans-serif;
+    --font-sans: 'Roboto Condensed', 'Inter', sans-serif;
     --font-body: 'Lora', Georgia, serif;
 
     --shadow-sm: 0 2px 10px hsla(0, 0%, 0%, 0.35);
