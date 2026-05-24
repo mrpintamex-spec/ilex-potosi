@@ -19,7 +19,7 @@ const HeroSection = ({ onSearch }: HeroSectionProps) => {
       id="inicio"
       className="min-h-screen flex items-center justify-center px-5 md:px-10 pt-24 pb-16 relative overflow-hidden"
       style={{
-        backgroundImage: `linear-gradient(hsla(195, 40%, 5%, 0.72), hsla(195, 40%, 5%, 0.88)), url(${heroBg})`,
+        backgroundImage: `linear-gradient(hsla(190, 50%, 7%, 0.78), hsla(190, 55%, 5%, 0.92)), url(${heroBg})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundAttachment: "fixed",
