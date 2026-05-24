@@ -1,3 +1,5 @@
+import ilexMark from "@/assets/ilex-mark.png";
+
 const navItems = [
   { href: "#consulta", label: "Consulta" },
   { href: "#diagnostico", label: "Diagnóstico" },
@@ -11,8 +13,8 @@ const navItems = [
 const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 h-16 flex items-center px-5 md:px-10 justify-between bg-background/85 backdrop-blur-md border-b border-copper/15">
-      <a href="#inicio" className="flex items-center gap-2 no-underline">
-        <span className="w-9 h-9 rounded-full border border-copper/50 flex items-center justify-center font-display text-copper text-base font-semibold tracking-tight">iL</span>
+      <a href="#inicio" className="flex items-center gap-3 no-underline">
+        <img src={ilexMark} alt="iLEX POTOSÍ" className="w-10 h-10 object-contain" />
         <span className="font-display text-lg tracking-tight text-cream">
           iLEX <span className="text-copper">POTOSÍ</span>
         </span>

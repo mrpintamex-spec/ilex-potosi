@@ -1,9 +1,14 @@
+import ilexMark from "@/assets/ilex-mark.png";
+
 const Footer = () => {
   return (
     <footer className="bg-teal-deep px-5 md:px-10 pt-[60px] pb-[30px] text-cream/60 border-t border-copper/15">
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr] gap-8 md:gap-12 max-w-[1200px] mx-auto pb-10 border-b border-copper/10 mb-7">
         <div>
-          <div className="font-display text-2xl text-cream">iLEX <span className="text-copper">POTOSÍ</span></div>
+          <div className="flex items-center gap-3">
+            <img src={ilexMark} alt="iLEX POTOSÍ" className="w-10 h-10 object-contain" />
+            <div className="font-display text-2xl text-cream">iLEX <span className="text-copper">POTOSÍ</span></div>
+          </div>
           <p className="font-sans text-[13px] leading-[1.75] text-cream/45 mt-3 max-w-[320px]">
             Orientación legal gratuita especializada en San Luis Potosí. Honesta, directa y clara. Desarrollado por ViBeSLP.
           </p>
